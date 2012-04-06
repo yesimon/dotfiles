@@ -21,14 +21,17 @@ shopt -s no_empty_cmd_completion >/dev/null 2>&1
 # ----------------------------------------------------------------------
 
 # we want the various sbins on the path along with /usr/local/bin
-PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/lib/python:/usr/local/share/python"
-PATH="/usr/local/bin:$PATH"
+PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/lib/python:"
+PATH="/usr/local/bin:/usr/local/share/python:$PATH"
 
 # put ~/bin on PATH if you have it
 test -d "$HOME/bin" &&
 PATH="$HOME/bin:$PATH"
 test -d "$HOME/bin/x86_64" &&
 PATH="$HOME/bin/x86_64:$PATH"
+
+test -d "/usr/local/lib/node_modules" &&
+NODE_PATH="/user/local/lib/node_modules:$NODE_PATH"
 
 # Enable en_US locale w/ utf-8 encodings if not already configured
 : ${LANG:="en_US.UTF-8"}
@@ -119,8 +122,13 @@ function ff () {
 # Show nonzero return codes
 PS1='`_ret=$?; if test $_ret -ne 0; then echo "$_ret:"; set ?=$_ret; unset _ret; fi`\u@\h:\W\$ '
 
-test -d "/usr/local/share/python/virtualenvwrapper.sh" &&
+# virtualenvwrapper os x homebrew location
+test -r "/usr/local/share/python/virtualenvwrapper.sh" &&
 source /usr/local/share/python/virtualenvwrapper.sh
+
+# virtualenvwrapper default location
+test -r "/usr/local/bin/virtualenvwrapper.sh" &&
+source /usr/local/bin/virtualenvwrapper.sh
 
 # source ~/.shenv now if it exists
 test -r ~/.shenv &&
