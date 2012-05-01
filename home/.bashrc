@@ -148,9 +148,9 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 # ----------------------------------------------------------------------
 
 # disk usage with human sizes and minimal depth
-alias du1='du -h --max-depth=1'
 alias fn='find . -name'
 alias hi='history | tail -20'
 alias ls='ls -BGph'
 alias ll='ls -la'
-alias mgrep="grep -v grep | grep"
+alias pgrep='pgrep -f -l'
+alias pkill='pkill -f'
