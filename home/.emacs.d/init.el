@@ -10,12 +10,16 @@
 (defvar my-packages '(starter-kit starter-kit-lisp starter-kit-bindings
 				  coffee-mode markdown-mode cmake-mode
                                   flymake flymake-shell pyflakes pymacs
-                                  ipython ido-ubiquitous)
+                                  ipython ido-ubiquitous find-file-in-git-repo)
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
+
+;; Find file in git repo
+(require 'find-file-in-git-repo)
+(global-set-key (kbd "C-x f") 'find-file-in-git-repo)
 
 ;; emacs-for-python setup.
 (add-to-list 'load-path "~/.emacs.d/emacs-for-python/") ;; tell where to load the various files
@@ -37,6 +41,9 @@
 
 ;; Disable linenum
 (global-linum-mode 0)
+
+;; Show column number
+(column-number-mode)
 
 ;; Delete and show trailing whitespace
 (setq-default show-trailing-whitespace t)
