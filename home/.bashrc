@@ -33,6 +33,18 @@ PATH="$HOME/bin/x86_64:$PATH"
 test -d "/usr/local/lib/node_modules" &&
 NODE_PATH="/user/local/lib/node_modules:$NODE_PATH"
 
+# virtualenvwrapper os x homebrew location
+test -r "/usr/local/share/python/virtualenvwrapper.sh" &&
+source /usr/local/share/python/virtualenvwrapper.sh
+
+# virtualenvwrapper default location
+test -r "/usr/local/bin/virtualenvwrapper.sh" &&
+source /usr/local/bin/virtualenvwrapper.sh
+
+# RVM if available
+test -r "$HOME/.rvm/scripts/rvm" &&
+. "$HOME/.rvm/scripts/rvm"
+
 # Enable en_US locale w/ utf-8 encodings if not already configured
 : ${LANG:="en_US.UTF-8"}
 : ${LANGUAGE:="en"}
@@ -121,14 +133,6 @@ function ff () {
 
 # Show nonzero return codes
 PS1='`_ret=$?; if test $_ret -ne 0; then echo "$_ret:"; set ?=$_ret; unset _ret; fi`\u@\h:\W\$ '
-
-# virtualenvwrapper os x homebrew location
-test -r "/usr/local/share/python/virtualenvwrapper.sh" &&
-source /usr/local/share/python/virtualenvwrapper.sh
-
-# virtualenvwrapper default location
-test -r "/usr/local/bin/virtualenvwrapper.sh" &&
-source /usr/local/bin/virtualenvwrapper.sh
 
 # source ~/.shenv now if it exists
 test -r ~/.shenv &&
