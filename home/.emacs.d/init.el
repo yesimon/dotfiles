@@ -36,6 +36,15 @@
     (setq flymake-check-was-interrupted t))
 (ad-activate 'flymake-post-syntax-check)
 
+;; Remove yasnippet
+(yas/global-mode nil)
+
+;; Remove auto-complete - Sometimes freezes
+(global-auto-complete-mode nil)
+
+;; Disable auto-newline in html mode
+(add-hook 'html-mode-hook 'turn-off-auto-fill)
+
 ;; Disable skeleton-pair parentheses
  (setq skeleton-pair nil)
 
@@ -44,6 +53,10 @@
 
 ;; Show column number
 (column-number-mode)
+
+;; Yaml mode
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
 ;; Delete and show trailing whitespace
 (setq-default show-trailing-whitespace t)
