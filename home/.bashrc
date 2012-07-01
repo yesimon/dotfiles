@@ -158,3 +158,4 @@ alias ls='ls -BGph'
 alias ll='ls -la'
 alias pgrep='pgrep -f -l'
 alias pkill='pkill -f'
+alias shell_name="ps -p $$ | tail -1 | awk '{print $NF}'"
