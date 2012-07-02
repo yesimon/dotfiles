@@ -104,6 +104,9 @@
 ;; Show trailing whitespace
 (setq whitespace-style '(trailing tabs newline tab-mark newline-mark))
 
+;; Remove ffap trying to guess url when opening files.
+(setq ido-use-url-at-point nil)
+
 ;; Remove yasnippet
 (yas/global-mode nil)
 
