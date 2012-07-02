@@ -10,12 +10,22 @@
 (defvar my-packages '(starter-kit starter-kit-lisp starter-kit-bindings
 				  coffee-mode markdown-mode cmake-mode
                                   flymake flymake-shell pyflakes pymacs
-                                  ipython ido-ubiquitous find-file-in-git-repo)
+                                  ipython ido-ubiquitous find-file-in-git-repo
+                                  yaml-mode flymake-coffee)
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
+
+;; Load user $PATH
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell
+         (replace-regexp-in-string "[[:space:]\n]*$" ""
+                                   (shell-command-to-string "$SHELL -l -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+(when (equal system-type 'darwin) (set-exec-path-from-shell-PATH))
 
 ;; Find file in git repo
 (require 'find-file-in-git-repo)
@@ -30,17 +40,6 @@
 (require 'epy-bindings) ;; For my suggested keybindings [optional]
 (epy-setup-ipython)
 (epy-setup-checker "pyflakes %f")
-
-;; Getting flymake to behave with flymake-coffee
-(defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
-    (setq flymake-check-was-interrupted t))
-(ad-activate 'flymake-post-syntax-check)
-
-;; Remove yasnippet
-(yas/global-mode nil)
-
-;; Remove auto-complete - Sometimes freezes
-(global-auto-complete-mode nil)
 
 ;; Disable auto-newline in html mode
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
@@ -93,15 +92,6 @@
 (when (display-graphic-p)
   (desktop-save-mode 1))
 
-;; Load user $PATH
-(defun set-exec-path-from-shell-PATH ()
-  (let ((path-from-shell
-         (replace-regexp-in-string "[[:space:]\n]*$" ""
-                                   (shell-command-to-string "$SHELL -l -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
-(when (equal system-type 'darwin) (set-exec-path-from-shell-PATH))
-
 ;; Remove visible-bell from starter-kit
 (setq visible-bell nil)
 ;; Remove scroll bars
@@ -111,4 +101,11 @@
 ;; Coffee-mode customizations
 (load "~/.emacs.d/coffee-custom")
 
+;; Show trailing whitespace
 (setq whitespace-style '(trailing tabs newline tab-mark newline-mark))
+
+;; Remove yasnippet
+(yas/global-mode nil)
+
+;; Remove auto-complete - Sometimes freezes
+(global-auto-complete-mode nil)
