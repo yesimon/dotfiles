@@ -41,6 +41,12 @@
 (epy-setup-ipython)
 (epy-setup-checker "pyflakes %f")
 
+;; Remove yasnippet
+(yas/global-mode nil)
+
+;; Remove auto-complete - Sometimes freezes
+(global-auto-complete-mode nil)
+
 ;; Disable auto-newline in html mode
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
 
@@ -106,9 +112,3 @@
 
 ;; Remove ffap trying to guess url when opening files.
 (setq ido-use-url-at-point nil)
-
-;; Remove yasnippet
-(yas/global-mode nil)
-
-;; Remove auto-complete - Sometimes freezes
-(global-auto-complete-mode nil)

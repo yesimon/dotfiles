@@ -21,7 +21,7 @@ shopt -s no_empty_cmd_completion >/dev/null 2>&1
 # ----------------------------------------------------------------------
 
 # we want the various sbins on the path along with /usr/local/bin
-PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/lib/python:"
+PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/lib/python"
 PATH="/usr/local/bin:/usr/local/share/python:$PATH"
 
 # put ~/bin on PATH if you have it
@@ -62,6 +62,9 @@ FIGNORE="~:CVS:#:.pyc:.swp:.swa:apache-solr-*"
 # Save more history, no dups
 export HISTCONTROL=erasedups
 export HISTSIZE=10000
+
+# Don't exit shell on accidental Ctrl-D
+export IGNOREEOF=
 
 # See what we have to work with ...
 HAVE_VIM=$(command -v vim)
@@ -139,9 +142,7 @@ test -r ~/.shenv &&
 source ~/.shenv
 
 PATH=$(puniq $PATH)
-MANPATH=$(puniq $MANPATH)
 export PATH
-export MANPATH
 
 export CLICOLOR=1
 #export LSCOLORS=ExFxCxDxBxegedabagacad
