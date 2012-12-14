@@ -155,7 +155,7 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 # disk usage with human sizes and minimal depth
 alias fn='find . -name'
 alias hi='history | tail -20'
-alias ls='ls -BGph'
+alias ls='ls -Bph'
 alias ll='ls -la'
 alias pgrep='pgrep -f -l'
 alias pkill='pkill -f'
