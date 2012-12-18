@@ -24,6 +24,13 @@ shopt -s no_empty_cmd_completion >/dev/null 2>&1
 PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/lib/python"
 PATH="/usr/local/bin:/usr/local/share/python:$PATH"
 
+test -d "$HOME/.cabal/bin" &&
+PATH="$HOME/.cabal/bin:$PATH"
+
+# RVM if available
+test -r "$HOME/.rvm/scripts/rvm" &&
+. "$HOME/.rvm/scripts/rvm"
+
 # put ~/bin on PATH if you have it
 test -d "$HOME/bin" &&
 PATH="$HOME/bin:$PATH"
@@ -40,10 +47,6 @@ source /usr/local/share/python/virtualenvwrapper.sh
 # virtualenvwrapper default location
 test -r "/usr/local/bin/virtualenvwrapper.sh" &&
 source /usr/local/bin/virtualenvwrapper.sh
-
-# RVM if available
-test -r "$HOME/.rvm/scripts/rvm" &&
-. "$HOME/.rvm/scripts/rvm"
 
 # Enable en_US locale w/ utf-8 encodings if not already configured
 : ${LANG:="en_US.UTF-8"}
