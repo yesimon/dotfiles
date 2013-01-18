@@ -14,8 +14,7 @@
 (defvar my-packages '(starter-kit starter-kit-lisp starter-kit-bindings
 				  coffee-mode markdown-mode cmake-mode
                                   flymake flymake-shell pyflakes pymacs
-                                  ipython ido-ubiquitous find-file-in-git-repo
-                                  yaml-mode flymake-coffee)
+                                  ipython yaml-mode flymake-coffee)
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
