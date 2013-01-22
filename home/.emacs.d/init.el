@@ -31,31 +31,12 @@
     (setq exec-path (split-string path-from-shell path-separator))))
 (when (equal system-type 'darwin) (set-exec-path-from-shell-PATH))
 
-;; Find file in git repo
-(require 'find-file-in-git-repo)
-(global-set-key (kbd "C-x f") 'find-file-in-git-repo)
-
-;; emacs-for-python setup.
-(add-to-list 'load-path "~/.emacs.d/emacs-for-python/") ;; tell where to load the various files
-(require 'epy-setup) ;; It will setup other loads, it is required!
-(require 'epy-python) ;; If you want the python facilities [optional]
-(require 'epy-completion) ;; If you want the autocompletion settings [optional]
-(require 'epy-editing) ;; For configurations related to editing [optional]
-(require 'epy-bindings) ;; For my suggested keybindings [optional]
-(epy-setup-ipython)
-(epy-setup-checker "pyflakes %f")
-
-;; Remove yasnippet
-(yas/global-mode nil)
-
-;; Remove auto-complete - Sometimes freezes
-(global-auto-complete-mode nil)
+;; Flymake for python
+(require 'flymake-python-pyflakes)
+(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
 
 ;; Disable auto-newline in html mode
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
-
-;; Disable skeleton-pair parentheses
- (setq skeleton-pair nil)
 
 ;; Disable linenum
 (global-linum-mode 0)
@@ -98,15 +79,15 @@
       `((".*" ,temporary-file-directory t)))
 
 ;; Automatically save and restore sessions only in graphical emacs.
-(setq desktop-dirname             "~/.emacs.d/desktop/"
-      desktop-base-file-name      "emacs.desktop"
-      desktop-base-lock-name      "lock"
-      desktop-path                (list desktop-dirname)
-      desktop-save                t
-      desktop-files-not-to-save   "^$" ;reload tramp paths
-      desktop-load-locked-desktop nil)
-(when (display-graphic-p)
-  (desktop-save-mode 1))
+;; (setq desktop-dirname             "~/.emacs.d/desktop/"
+;;       desktop-base-file-name      "emacs.desktop"
+;;       desktop-base-lock-name      "lock"
+;;       desktop-path                (list desktop-dirname)
+;;       desktop-save                t
+;;       desktop-files-not-to-save   "^$" ;reload tramp paths
+;;       desktop-load-locked-desktop nil)
+;; (when (display-graphic-p)
+;;   (desktop-save-mode 1))
 
 ;; Remove visible-bell from starter-kit
 (setq visible-bell nil)
