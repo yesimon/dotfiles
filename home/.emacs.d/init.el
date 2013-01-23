@@ -13,7 +13,8 @@
 ;; Add in your own as you wish:
 (defvar my-packages '(starter-kit starter-kit-lisp starter-kit-bindings
 				  coffee-mode markdown-mode cmake-mode
-                                  flymake flymake-shell pyflakes pymacs
+                                  flymake flymake-shell pyflakes
+                                  flymake-python-pyflakes pymacs
                                   ipython yaml-mode flymake-coffee)
   "A list of packages to ensure are installed at launch.")
 
@@ -78,15 +79,15 @@
       `((".*" ,temporary-file-directory t)))
 
 ;; Automatically save and restore sessions only in graphical emacs.
-;; (setq desktop-dirname             "~/.emacs.d/desktop/"
-;;       desktop-base-file-name      "emacs.desktop"
-;;       desktop-base-lock-name      "lock"
-;;       desktop-path                (list desktop-dirname)
-;;       desktop-save                t
-;;       desktop-files-not-to-save   "^$" ;reload tramp paths
-;;       desktop-load-locked-desktop nil)
-;; (when (display-graphic-p)
-;;   (desktop-save-mode 1))
+(setq desktop-dirname             "~/.emacs.d/desktop/"
+      desktop-base-file-name      "emacs.desktop"
+      desktop-base-lock-name      "lock"
+      desktop-path                (list desktop-dirname)
+      desktop-save                t
+      desktop-files-not-to-save   "^$" ;reload tramp paths
+      desktop-load-locked-desktop nil)
+(when (display-graphic-p)
+  (desktop-save-mode 1))
 
 ;; Remove visible-bell from starter-kit
 (setq visible-bell nil)
@@ -102,3 +103,9 @@
 
 ;; Remove ffap trying to guess url when opening files.
 (setq ido-use-url-at-point nil)
+
+;; Prevent ffap trying to open root paths when editing html.
+(defadvice ffap-file-at-point (after ffap-file-at-point-after-advice ())
+  (if (string= ad-return-value "/")
+      (setq ad-return-value nil)))
+(ad-activate 'ffap-file-at-point)
