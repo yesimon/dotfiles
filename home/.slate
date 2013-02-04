@@ -1,0 +1,3 @@
+alias 1-main move screenOriginX;screenOriginY screenSizeX;screenSizeY
+
+bind m:alt,ctrl,cmd ${1-main}
