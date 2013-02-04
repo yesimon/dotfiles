@@ -44,6 +44,8 @@
 ;; Show column number
 (column-number-mode)
 
+(set-default-font "DejaVu Sans Mono 12")
+
 ;; Yaml mode
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
