@@ -40,13 +40,24 @@ PATH="$HOME/bin/x86_64:$PATH"
 test -d "/usr/local/lib/node_modules" &&
 NODE_PATH="/user/local/lib/node_modules:$NODE_PATH"
 
-# virtualenvwrapper os x homebrew location
-test -r "/usr/local/share/python/virtualenvwrapper.sh" &&
-source /usr/local/share/python/virtualenvwrapper.sh
+unamestr=`uname`
+if [[ "$unamestr" == 'Linux' ]]; then
+    # virtualenvwrapper default location
+    test -r "/usr/local/bin/virtualenvwrapper.sh" &&
+    source /usr/local/bin/virtualenvwrapper.sh
+elif [[ "$unamestr" == 'Darwin' ]]; then
+    if type brew > /dev/null 2>&1; then
+        source `brew --prefix`/etc/profile.d/z.sh
+    fi
 
-# virtualenvwrapper default location
-test -r "/usr/local/bin/virtualenvwrapper.sh" &&
-source /usr/local/bin/virtualenvwrapper.sh
+    test -d "/usr/local/share/npm/bin" &&
+    PATH="/usr/local/share/npm/bin:$PATH"
+
+    # virtualenvwrapper os x homebrew location
+    test -r "/usr/local/share/python/virtualenvwrapper.sh" &&
+    source /usr/local/share/python/virtualenvwrapper.sh
+fi
+
 
 # Enable en_US locale w/ utf-8 encodings if not already configured
 : ${LANG:="en_US.UTF-8"}

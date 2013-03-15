@@ -15,7 +15,8 @@
 				  coffee-mode markdown-mode cmake-mode
                                   flymake flymake-shell pyflakes
                                   flymake-python-pyflakes pymacs
-                                  ipython yaml-mode flymake-coffee)
+                                  ipython yaml-mode flymake-coffee
+                                  s dash projectile helm)
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
@@ -30,6 +31,12 @@
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator))))
 (when (equal system-type 'darwin) (set-exec-path-from-shell-PATH))
+
+(require 'projectile)
+(require 'helm-config)
+(global-set-key (kbd "C-c h") 'helm-mini)
+(helm-mode 1)
+(projectile-global-mode)
 
 ;; Flymake for python
 (require 'flymake-python-pyflakes)
