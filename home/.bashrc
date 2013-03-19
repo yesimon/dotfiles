@@ -102,8 +102,13 @@ if [ "$TERM" = "screen" ]; then
   PROMPT_COMMAND="screen_set_window_title; $PROMPT_COMMAND"
 fi
 
-# Add cd ... and cd -- functionality.
-source acd_func.sh
+# Add recurisve cd ...
+function cd()
+{
+  local -ri n=${#*};
+  local e="s:\.\.\.:../..:g";
+  builtin cd "${@:1:$n-1}" $(sed -e$e -e$e -e$e <<< "${!n}");
+}
 
 # Handy Extract Program
 extract () {
