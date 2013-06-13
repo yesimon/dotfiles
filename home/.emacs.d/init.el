@@ -1,28 +1,3 @@
-(require 'package)
-(add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives
-             '("gnu" . "http://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/"))
-(package-initialize)
-
-(when (not package-archive-contents)
-  (package-refresh-contents))
-
-;; Add in your own as you wish:
-(defvar my-packages '(starter-kit starter-kit-lisp starter-kit-bindings
-				  coffee-mode markdown-mode cmake-mode
-                                  flymake flymake-shell pyflakes
-                                  flymake-python-pyflakes pymacs
-                                  ipython yaml-mode flymake-coffee
-                                  s dash projectile helm)
-  "A list of packages to ensure are installed at launch.")
-
-(dolist (p my-packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
-
 ;; Load user $PATH
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell
@@ -32,15 +7,96 @@
     (setq exec-path (split-string path-from-shell path-separator))))
 (when (equal system-type 'darwin) (set-exec-path-from-shell-PATH))
 
-(require 'projectile)
-(require 'helm-config)
-(global-set-key (kbd "C-c h") 'helm-mini)
-(helm-mode 1)
-(projectile-global-mode)
+(require 'package)
+(add-to-list 'package-archives
+	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '("gnu" . "http://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/"))
+(package-initialize)
 
-;; Flymake for python
-(require 'flymake-python-pyflakes)
-(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+    (let (el-get-master-branch)
+      (goto-char (point-max))
+      (eval-print-last-sexp))))
+
+(setq el-get-sources
+      '((:name flymake-python-pyflakes
+               :type github
+	       :pkgname "purcell/flymake-python-pyflakes"
+	       :depends (flymake-easy)
+               :post-init (progn
+			    (add-hook 'python-mode-hook 'flymake-python-pyflakes-load))
+               :features flymake-python-pyflakes)
+        (:name helm
+               :type github
+               :pkgname "emacs-helm/helm"
+               :compile nil
+               :after (progn
+                        (global-set-key (kbd "C-c h") 'helm-mini)
+                        (helm-mode 1))
+               :features helm-config)
+        (:name projectile
+               :type github
+               :pkgname "bbatsov/projectile"
+               :depends (dash s)
+               :after (projectile-global-mode)
+               :features projectile)
+        (:name multi-term
+               :type emacswiki
+               :features multi-term
+               :after (setq multi-term-program "/usr/local/bin/fish"))
+        (:name coffee-mode
+               :type elpa
+               :after (load "~/.emacs.d/coffee-custom"))
+        (:name yaml-mode
+               :features yaml-mode
+               :after (progn
+                        (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+                        (add-to-list 'auto-mode-alist '("\\.sls$" . yaml-mode))))
+        (:name revive-plus
+               :type github
+	       :depends (revive)
+               :after (progn
+                        (setq revive-plus:all-frames t)
+                        (revive-plus:minimal-setup))
+               :features revive+
+               :pkgname "martialboniou/revive-plus")
+        ))
+
+(setq my-el-get-packages
+      '(smex
+	ido-ubiquitous
+	idle-highlight-mode
+	magit
+	coffee-mode
+        yaml-mode
+        markdown-mode
+        flymake-python-pyflakes
+	helm
+	projectile
+        ipython
+        flymake-coffee
+        ack-and-a-half
+        multi-term
+        revive-plus
+        frame-restore))
+
+(el-get 'sync my-el-get-packages)
+
+(add-hook 'term-mode-hook
+          (lambda ()
+            (setq show-trailing-whitespace nil)))
+
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (setq show-trailing-whitespace nil)))
 
 ;; Disable auto-newline in html mode
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
@@ -52,16 +108,6 @@
 (column-number-mode)
 
 (set-default-font "DejaVu Sans Mono 12")
-
-;; Yaml mode
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.sls$" . yaml-mode))
-
-;; Markdown mode
-(autoload 'markdown-mode "markdown-mode.el"
-  "Major mode for editing Markdown files" t)
-(setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
 ;; Delete and show trailing whitespace
 (setq-default show-trailing-whitespace t)
@@ -87,14 +133,60 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; Automatically save and restore sessions only in graphical emacs.
-(setq desktop-dirname             "~/.emacs.d/desktop/"
-      desktop-base-file-name      "emacs.desktop"
-      desktop-base-lock-name      "lock"
-      desktop-path                (list desktop-dirname)
-      desktop-save                t
-      desktop-files-not-to-save   "^$" ;reload tramp paths
-      desktop-load-locked-desktop nil)
+(setq inhibit-startup-message t
+      color-theme-is-global t
+      sentence-end-double-space nil
+      shift-select-mode nil
+      mouse-yank-at-point t
+      uniquify-buffer-name-style 'forward
+      whitespace-style '(face trailing lines-tail tabs)
+      whitespace-line-column 80
+      ediff-window-setup-function 'ediff-setup-windows-plain
+      oddmuse-directory (concat user-emacs-directory "oddmuse")
+      save-place-file (concat user-emacs-directory "places")
+      backup-directory-alist `(("." . ,(concat user-emacs-directory "backups")))
+      diff-switches "-u")
+
+(tool-bar-mode -1)
+(add-hook 'before-make-frame-hook 'esk-turn-off-tool-bar)
+
+;; Font size
+(define-key global-map (kbd "C-+") 'text-scale-increase)
+(define-key global-map (kbd "C--") 'text-scale-decrease)
+
+;; Use regex searches by default.
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "\C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "M-%") 'query-replace-regexp)
+(global-set-key (kbd "C-M-s") 'isearch-forward)
+(global-set-key (kbd "C-M-r") 'isearch-backward)
+(global-set-key (kbd "C-M-%") 'query-replace)
+
+;; Jump to a definition in the current file. (Protip: this is awesome.)
+(global-set-key (kbd "C-x C-i") 'imenu)
+
+(when window-system
+  (setq frame-title-format '(buffer-file-name "%f" ("%b")))
+  (tooltip-mode -1)
+  (mouse-wheel-mode t)
+  (blink-cursor-mode -1))
+(show-paren-mode 1)
+
+;; ido-mode is like magic pixie dust!
+(ido-mode t)
+(ido-ubiquitous t)
+(setq ido-enable-prefix nil
+      ido-enable-flex-matching t
+      ido-auto-merge-work-directories-length nil
+      ido-create-new-buffer 'always
+      ido-use-filename-at-point 'guess
+      ido-use-virtual-buffers t
+      ido-handle-duplicate-virtual-buffers 2
+      ido-max-prospects 10)
+(set-default 'indent-tabs-mode nil)
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (when (display-graphic-p)
   (desktop-save-mode 1))
 
@@ -104,14 +196,14 @@
 (require 'scroll-bar)
 (set-scroll-bar-mode 'nil)
 
-;; Coffee-mode customizations
-(load "~/.emacs.d/coffee-custom")
-
 ;; Show trailing whitespace
 (setq whitespace-style '(trailing tabs newline tab-mark newline-mark))
 
 ;; Remove ffap trying to guess url when opening files.
 (setq ido-use-url-at-point nil)
+
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
 
 ;; Prevent ffap trying to open root paths when editing html.
 (defadvice ffap-file-at-point (after ffap-file-at-point-after-advice ())
