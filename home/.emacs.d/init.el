@@ -88,6 +88,7 @@
 	helm
 	projectile
         ipython
+        jedi
         flymake-coffee
         ack-and-a-half
         multi-term
@@ -104,6 +105,10 @@
 (add-hook 'shell-mode-hook
           (lambda ()
             (setq show-trailing-whitespace nil)))
+
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:setup-keys t)
+(setq jedi:complete-on-dot t)
 
 ;; Disable auto-newline in html mode
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
