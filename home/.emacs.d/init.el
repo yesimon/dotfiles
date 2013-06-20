@@ -55,6 +55,12 @@
         (:name coffee-mode
                :type elpa
                :after (load "~/.emacs.d/coffee-custom"))
+        (:name web-mode
+               :description "emacs major mode for editing PHP/JSP/ASP HTML templates (with embedded CSS and JS blocks)"
+               :type github
+               :features web-mode
+               :after (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+               :pkgname "fxbois/web-mode")
         (:name yaml-mode
                :features yaml-mode
                :after (progn
@@ -85,6 +91,7 @@
         flymake-coffee
         ack-and-a-half
         multi-term
+        web-mode
         revive-plus
         frame-restore))
 
@@ -101,103 +108,8 @@
 ;; Disable auto-newline in html mode
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
 
-;; Disable linenum
-(global-linum-mode 0)
-
-;; Show column number
-(column-number-mode)
-
-(set-default-font "DejaVu Sans Mono 12")
-
-;; Delete and show trailing whitespace
-(setq-default show-trailing-whitespace t)
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-(add-hook 'before-save-hook 'delete-trailing-blank-lines)
-(defun delete-trailing-blank-lines ()
-      "Deletes all blank lines at the end of the file."
-      (interactive)
-      (save-excursion
-        (save-restriction
-          (widen)
-          (goto-char (point-max))
-          (delete-blank-lines))))
-
-;; Auto revert to sync with VC
-(global-auto-revert-mode t)
-(setq auto-revert-check-vc-info t)
-(setq auto-revert-interval 10)
-
-;; Remove backup and auto-saves.
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
-
-(setq inhibit-startup-message t
-      color-theme-is-global t
-      sentence-end-double-space nil
-      shift-select-mode nil
-      mouse-yank-at-point t
-      uniquify-buffer-name-style 'forward
-      whitespace-style '(face trailing lines-tail tabs)
-      whitespace-line-column 80
-      ediff-window-setup-function 'ediff-setup-windows-plain
-      oddmuse-directory (concat user-emacs-directory "oddmuse")
-      save-place-file (concat user-emacs-directory "places")
-      backup-directory-alist `(("." . ,(concat user-emacs-directory "backups")))
-      diff-switches "-u")
-
-(tool-bar-mode -1)
-(add-hook 'before-make-frame-hook 'esk-turn-off-tool-bar)
-
-;; Font size
-(define-key global-map (kbd "C-+") 'text-scale-increase)
-(define-key global-map (kbd "C--") 'text-scale-decrease)
-
-;; Use regex searches by default.
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(global-set-key (kbd "\C-r") 'isearch-backward-regexp)
-(global-set-key (kbd "M-%") 'query-replace-regexp)
-(global-set-key (kbd "C-M-s") 'isearch-forward)
-(global-set-key (kbd "C-M-r") 'isearch-backward)
-(global-set-key (kbd "C-M-%") 'query-replace)
-
-;; Jump to a definition in the current file. (Protip: this is awesome.)
-(global-set-key (kbd "C-x C-i") 'imenu)
-
-(when window-system
-  (setq frame-title-format '(buffer-file-name "%f" ("%b")))
-  (tooltip-mode -1)
-  (mouse-wheel-mode t)
-  (blink-cursor-mode -1))
-(show-paren-mode 1)
-
-;; ido-mode is like magic pixie dust!
-(ido-mode t)
-(ido-ubiquitous t)
-(setq ido-enable-prefix nil
-      ido-enable-flex-matching t
-      ido-auto-merge-work-directories-length nil
-      ido-create-new-buffer 'always
-      ido-use-filename-at-point 'guess
-      ido-use-virtual-buffers t
-      ido-handle-duplicate-virtual-buffers 2
-      ido-max-prospects 10)
-(set-default 'indent-tabs-mode nil)
-
-(defalias 'yes-or-no-p 'y-or-n-p)
-
 (when (display-graphic-p)
   (desktop-save-mode 1))
-
-;; Remove visible-bell from starter-kit
-(setq visible-bell nil)
-;; Remove scroll bars
-(require 'scroll-bar)
-(set-scroll-bar-mode 'nil)
-
-;; Show trailing whitespace
-(setq whitespace-style '(trailing tabs newline tab-mark newline-mark))
 
 ;; Remove ffap trying to guess url when opening files.
 (setq ido-use-url-at-point nil)
@@ -210,3 +122,6 @@
   (if (string= ad-return-value "/")
       (setq ad-return-value nil)))
 (ad-activate 'ffap-file-at-point)
+
+(load "~/.emacs.d/misc.el" t)
+(load "~/.emacs.d/local.el" t)
