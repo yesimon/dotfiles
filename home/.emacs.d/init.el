@@ -94,7 +94,8 @@
         multi-term
         web-mode
         revive-plus
-        frame-restore))
+        frame-restore
+        web-mode))
 
 (el-get 'sync my-el-get-packages)
 
@@ -109,6 +110,8 @@
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:setup-keys t)
 (setq jedi:complete-on-dot t)
+
+(add-hook 'web-mode-hook 'whitespace-turn-off)
 
 ;; Disable auto-newline in html mode
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
