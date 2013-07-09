@@ -3,7 +3,7 @@
       sentence-end-double-space nil
       shift-select-mode nil
       mouse-yank-at-point t
-      uniquify-buffer-name-style 'forward
+      uniquify-buffer-name-style 'post-forward-angle-brackets
       whitespace-style '(face trailing lines-tail tabs)
       whitespace-line-column 80
       ediff-window-setup-function 'ediff-setup-windows-plain
@@ -16,6 +16,8 @@
 ;; Remove scroll bars
 (require 'scroll-bar)
 (set-scroll-bar-mode 'nil)
+
+(require 'uniquify)
 
 (defun esk-pretty-lambdas ()
   (font-lock-add-keywords

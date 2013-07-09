@@ -87,12 +87,11 @@
         flymake-python-pyflakes
 	helm
 	projectile
-        ipython
+        ;; ipython
         jedi
         flymake-coffee
         ack-and-a-half
         multi-term
-        web-mode
         revive-plus
         frame-restore
         web-mode))
