@@ -48,6 +48,17 @@ Prompt to find a file found by ack in DIRECTORY.
 
 ;;;***
 
+;;;### (autoloads (auto-complete) "auto-complete/auto-complete" "../../../../../../../.emacs.d/el-get/auto-complete/auto-complete.el"
+;;;;;;  "901a3d1106ca99b08654979a9bc8ebd6")
+;;; Generated autoloads from ../../../../../../../.emacs.d/el-get/auto-complete/auto-complete.el
+
+(autoload 'auto-complete "auto-complete/auto-complete" "\
+Start auto-completion at current point.
+
+\(fn &optional SOURCES)" t nil)
+
+;;;***
+
 ;;;### (autoloads (coffee-mode) "coffee-mode/coffee-mode" "coffee-mode/coffee-mode.el"
 ;;;;;;  (20920 9987))
 ;;; Generated autoloads from coffee-mode/coffee-mode.el
@@ -2416,8 +2427,20 @@ Simple mode to edit YAML.
 
 ;;;***
 
-;;;### (autoloads nil nil ("cl-lib/cl-lib-autoloads.el" "cl-lib/cl-lib-pkg.el"
-;;;;;;  "cl-lib/cl-lib.el" "coffee-mode/coffee-mode-autoloads.el"
+;;;### (autoloads nil nil ("../../../../../../../.emacs.d/el-get/auto-complete/auto-complete-config.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/auto-complete/auto-complete-pkg.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/auto-complete/auto-complete.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/ctable/ctable.el" "../../../../../../../.emacs.d/el-get/ctable/test-ctable.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/deferred/concurrent-sample.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/deferred/concurrent.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/deferred/deferred-samples.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/deferred/deferred.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/deferred/test-concurrent.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/deferred/test-deferred.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/epc/epc.el" "../../../../../../../.emacs.d/el-get/epc/epcs.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/epc/test-epc.el" "../../../../../../../.emacs.d/el-get/fuzzy/fuzzy.el"
+;;;;;;  "../../../../../../../.emacs.d/el-get/popup/popup.el" "cl-lib/cl-lib-autoloads.el"
+;;;;;;  "cl-lib/cl-lib-pkg.el" "cl-lib/cl-lib.el" "coffee-mode/coffee-mode-autoloads.el"
 ;;;;;;  "coffee-mode/coffee-mode-pkg.el" "dash/dash.el" "el-get/el-get-autoloads.el"
 ;;;;;;  "el-get/el-get-build.el" "el-get/el-get-byte-compile.el"
 ;;;;;;  "el-get/el-get-core.el" "el-get/el-get-custom.el" "el-get/el-get-dependencies.el"
@@ -2427,7 +2450,7 @@ Simple mode to edit YAML.
 ;;;;;;  "helm/helm-plugin.el" "ido-ubiquitous/ido-ubiquitous-autoloads.el"
 ;;;;;;  "ido-ubiquitous/ido-ubiquitous-pkg.el" "ipython/ipython.el"
 ;;;;;;  "magit/magit-bisect.el" "magit/magit-key-mode.el" "python-mode/python-mode.el"
-;;;;;;  "s/s.el") (20937 18549 216207))
+;;;;;;  "s/s.el") (20941 15680 120347))
 
 ;;;***
 

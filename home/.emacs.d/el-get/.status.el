@@ -5,15 +5,25 @@
 			  (defalias 'ack-same 'ack-and-a-half-same)
 			  (defalias 'ack-find-file 'ack-and-a-half-find-file)
 			  (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same))))
+ (auto-complete status "installed" recipe
+		(:name auto-complete :website "https://github.com/auto-complete/auto-complete" :description "The most intelligent auto-completion extension." :type github :pkgname "auto-complete/auto-complete" :depends
+		       (popup fuzzy)))
  (cl-lib status "installed" recipe
 	 (:name cl-lib :builtin "24.3" :type elpa :description "Properly prefixed CL functions and macros" :url "http://elpa.gnu.org/packages/cl-lib.html"))
  (coffee-mode status "installed" recipe
 	      (:name coffee-mode :type elpa :after
 		     (load "~/.emacs.d/coffee-custom")))
+ (ctable status "installed" recipe
+	 (:name ctable :description "Table Component for elisp" :type github :pkgname "kiwanami/emacs-ctable"))
  (dash status "installed" recipe
        (:name dash :description "A modern list api for Emacs. No 'cl required." :type github :pkgname "magnars/dash.el"))
+ (deferred status "installed" recipe
+   (:name deferred :description "Simple asynchronous functions for emacs lisp" :website "https://github.com/kiwanami/emacs-deferred" :type github :pkgname "kiwanami/emacs-deferred" :features "deferred"))
  (el-get status "installed" recipe
 	 (:name el-get :website "https://github.com/dimitri/el-get#readme" :description "Manage the external elisp bits and pieces you depend upon." :type github :branch "4.stable" :pkgname "dimitri/el-get" :info "." :load "el-get.el"))
+ (epc status "installed" recipe
+      (:name epc :description "An RPC stack for Emacs Lisp" :type github :pkgname "kiwanami/emacs-epc" :depends
+	     (deferred ctable)))
  (flymake-coffee status "installed" recipe
 		 (:name flymake-coffee :type github :pkgname "purcell/flymake-coffee" :description "Flymake support for coffee script" :website "http://github.com/purcell/flymake-coffee" :depends
 			(flymake-easy)
@@ -30,6 +40,10 @@
 				 :features flymake-python-pyflakes))
  (frame-restore status "installed" recipe
 		(:name frame-restore :type emacswiki :description "Save/restore frame size & position with desktop-save" :website "https://raw.github.com/emacsmirror/emacswiki.org/master/frame-restore.el" :features frame-restore))
+ (fuzzy status "installed" recipe
+	(:name fuzzy :website "https://github.com/auto-complete/fuzzy-el" :description "Fuzzy matching utilities for GNU Emacs" :type github :pkgname "auto-complete/fuzzy-el"))
+ (git-modes status "installed" recipe
+	    (:name git-modes :description "GNU Emacs modes for various Git-related files" :type github :pkgname "magit/git-modes"))
  (helm status "installed" recipe
        (:name helm :type github :pkgname "emacs-helm/helm" :compile nil :after
 	      (progn
@@ -45,6 +59,11 @@
  (ipython status "installed" recipe
 	  (:name ipython :description "Adds support for IPython to python-mode.el" :type http :url "https://raw.github.com/ipython/ipython/master/docs/emacs/ipython.el" :depends python-mode :features ipython :post-init
 		 (setq py-shell-name "ipython")))
+ (jedi status "installed" recipe
+       (:name jedi :description "An awesome Python auto-completion for Emacs" :type github :pkgname "tkf/emacs-jedi" :build
+	      (("make" "requirements"))
+	      :submodule nil :depends
+	      (epc auto-complete)))
  (layout-restore status "required" recipe
 		 (:name layout-restore :auto-generated t :type emacswiki :description "" :website "https://raw.github.com/emacsmirror/emacswiki.org/master/layout-restore.el"))
  (magit status "installed" recipe
@@ -61,7 +80,7 @@
 	       (("touch" "`find . -name Makefile`")
 		("gmake"))))
  (markdown-mode status "installed" recipe
-		(:name markdown-mode :description "Major mode to edit Markdown files in Emacs" :type git :url "git://jblevins.org/git/markdown-mode.git" :before
+		(:name markdown-mode :description "Major mode to edit Markdown files in Emacs" :website "http://jblevins.org/projects/markdown-mode/" :type git :url "git://jblevins.org/git/markdown-mode.git" :before
 		       (add-to-list 'auto-mode-alist
 				    '("\\.\\(md\\|mdown\\|markdown\\)\\'" . markdown-mode))))
  (multi-term status "installed" recipe
@@ -89,6 +108,8 @@
 			   ("gnu" . "http://elpa.gnu.org/packages/")
 			   ("marmalade" . "http://marmalade-repo.org/packages/")
 			   ("SC" . "http://joseito.republika.pl/sunrise-commander/"))))))
+ (popup status "installed" recipe
+	(:name popup :website "https://github.com/auto-complete/popup-el" :description "Visual Popup Interface Library for Emacs" :type github :pkgname "auto-complete/popup-el"))
  (projectile status "installed" recipe
 	     (:name projectile :type github :pkgname "bbatsov/projectile" :depends
 		    (dash s)
@@ -124,8 +145,13 @@
 		       (:name starter-kit-bindings :type elpa))
  (starter-kit-lisp status "required" recipe
 		   (:name starter-kit-lisp :type elpa))
+ (thrift status "installed" recipe
+	 (:name thrift :type http :url "https://raw.github.com/apache/thrift/master/contrib/thrift.el" :features thrift))
  (web-mode status "installed" recipe
-	   (:name web-mode :description "emacs major mode for editing PHP/JSP/ASP HTML templates (with embedded CSS and JS blocks)" :type github :pkgname "fxbois/web-mode"))
+	   (:name web-mode :description "emacs major mode for editing PHP/JSP/ASP HTML templates (with embedded CSS and JS blocks)" :type github :features web-mode :after
+		  (add-to-list 'auto-mode-alist
+			       '("\\.html?\\'" . web-mode))
+		  :pkgname "fxbois/web-mode"))
  (yaml-mode status "installed" recipe
 	    (:name yaml-mode :description "Simple major mode to edit YAML file for emacs" :type github :pkgname "yoshiki/yaml-mode" :features yaml-mode :after
 		   (progn

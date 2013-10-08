@@ -1,1 +1,1 @@
-("/Users/simon/.homesick/repos/yesimon/dotfiles/" "/Users/simon/.emacs.d/el-get/markdown-mode/" "/Users/simon/src/django-hunger/" "/Users/simon/src/premonit/")
+("/Users/simon/.homesick/repos/yesimon/dotfiles/" "/Users/simon/Downloads/paperdoll-v1.0/lib/pf-segment/" "/Users/simon/Downloads/paperdoll-v1.0/lib/mexopencv/" "/Users/simon/.emacs.d/el-get/el-get/" "/Users/simon/src/django-hunger/" "/Users/simon/.emacs.d/el-get/markdown-mode/" "/Users/simon/src/premonit/" "/Users/simon/src/rosalind/")

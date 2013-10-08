@@ -34,6 +34,10 @@
                :post-init (progn
 			    (add-hook 'python-mode-hook 'flymake-python-pyflakes-load))
                :features flymake-python-pyflakes)
+        (:name thrift
+               :type http
+               :url "https://raw.github.com/apache/thrift/master/contrib/thrift.el"
+               :features thrift)
         (:name helm
                :type github
                :pkgname "emacs-helm/helm"
@@ -80,15 +84,16 @@
       '(smex
 	ido-ubiquitous
 	idle-highlight-mode
-	magit
+	;; magit
 	coffee-mode
         yaml-mode
         markdown-mode
         flymake-python-pyflakes
-	helm
+	;; helm
 	projectile
         ;; ipython
         jedi
+        thrift
         flymake-coffee
         ack-and-a-half
         multi-term
@@ -97,6 +102,10 @@
         web-mode))
 
 (el-get 'sync my-el-get-packages)
+
+ (autoload 'octave-mode "octave-mod" nil t)
+          (setq auto-mode-alist
+                (cons '("\\.m$" . octave-mode) auto-mode-alist))
 
 (add-hook 'term-mode-hook
           (lambda ()
@@ -115,8 +124,11 @@
 ;; Disable auto-newline in html mode
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
 
-(when (display-graphic-p)
-  (desktop-save-mode 1))
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+
+;; (when (display-graphic-p)
+;;   (desktop-save-mode 1))
 
 ;; Remove ffap trying to guess url when opening files.
 (setq ido-use-url-at-point nil)

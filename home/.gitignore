@@ -4,3 +4,8 @@
 *~
 .DS_Store
 *.pyc
+.emacs.d/el-get/
+.emacs.d/wconf-archive
+.emacs.d/projectile-bookmark.eld
+.emacs.d/last-wconf
+.emacs.d/desktop

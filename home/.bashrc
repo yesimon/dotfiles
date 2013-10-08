@@ -22,7 +22,7 @@ shopt -s no_empty_cmd_completion >/dev/null 2>&1
 
 # we want the various sbins on the path along with /usr/local/bin
 PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/lib/python"
-PATH="/usr/local/bin:/usr/local/share/python:$PATH"
+PATH="/usr/local/bin:$PATH"
 
 test -d "$HOME/.cabal/bin" &&
 PATH="$HOME/.cabal/bin:$PATH"

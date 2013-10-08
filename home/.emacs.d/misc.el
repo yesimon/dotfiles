@@ -100,6 +100,9 @@
 
 ;; Keybindings
 
+(global-set-key (kbd "C-x C-b") 'ibuffer) ;; Use Ibuffer for Buffer
+(global-set-key (kbd "C-x C-d") 'dired) ;; Use Dired
+
 ;; Font size
 (define-key global-map (kbd "C-+") 'text-scale-increase)
 (define-key global-map (kbd "C--") 'text-scale-decrease)
