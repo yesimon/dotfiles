@@ -31,9 +31,8 @@
                :type github
          :pkgname "purcell/flymake-python-pyflakes"
          :depends (flymake-easy)
-               :post-init (progn
-                            (add-hook 'python-mode-hook 'flymake-python-pyflakes-load))
-               :features flymake-python-pyflakes)
+         :post-init (add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
+         :features flymake-python-pyflakes)
         (:name thrift
                :type http
                :url "https://raw.github.com/apache/thrift/master/contrib/thrift.el"
