@@ -43,6 +43,14 @@
         (:name projectile
                :after (projectile-global-mode)
                :features projectile)
+        (:name anti-zenburn-theme
+               :type github
+               :pkgname "m00natic/anti-zenburn-theme"
+               :prepare (add-to-list 'custom-theme-load-path default-directory))
+        (:name color-theme-base16
+               :type github
+               :pkgname "milkypostman/base16-emacs"
+               :prepare (add-to-list 'custom-theme-load-path default-directory))
         (:name coffee-mode
                :type elpa
                :after (load "~/.emacs.d/coffee-custom"))
@@ -77,9 +85,10 @@
         yaml-mode
         markdown-mode
         flymake-python-pyflakes
-        projectile
+	projectile
         jedi
         thrift
+        color-theme-base16
         flymake-coffee
         ack-and-a-half
         revive-plus
@@ -128,3 +137,5 @@
 
 (load "~/.emacs.d/misc.el" t)
 (load "~/.emacs.d/local.el" t)
+
+(load-theme 'zenburn t)

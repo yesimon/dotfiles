@@ -12,6 +12,7 @@
       diff-switches "-u")
 
 (tool-bar-mode -1)
+(menu-bar-mode -1)
 ;; Remove scroll bars
 (require 'scroll-bar)
 (set-scroll-bar-mode 'nil)
