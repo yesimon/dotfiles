@@ -85,7 +85,7 @@
         yaml-mode
         markdown-mode
         flymake-python-pyflakes
-	projectile
+        projectile
         jedi
         thrift
         color-theme-base16
