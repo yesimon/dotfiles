@@ -9,7 +9,7 @@
 
 (require 'package)
 (add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+       '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
              '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives
@@ -29,33 +29,21 @@
 (setq el-get-sources
       '((:name flymake-python-pyflakes
                :type github
-	       :pkgname "purcell/flymake-python-pyflakes"
-	       :depends (flymake-easy)
+         :pkgname "purcell/flymake-python-pyflakes"
+         :depends (flymake-easy)
                :post-init (progn
-			    (add-hook 'python-mode-hook 'flymake-python-pyflakes-load))
+                            (add-hook 'python-mode-hook 'flymake-python-pyflakes-load))
                :features flymake-python-pyflakes)
         (:name thrift
                :type http
                :url "https://raw.github.com/apache/thrift/master/contrib/thrift.el"
                :features thrift)
-        (:name helm
-               :type github
-               :pkgname "emacs-helm/helm"
-               :compile nil
-               :after (progn
-                        (global-set-key (kbd "C-c h") 'helm-mini)
-                        (helm-mode 1))
-               :features helm-config)
+	(:name auto-complete
+               :after (global-auto-complete-mode t)
+	       :features auto-complete)
         (:name projectile
-               :type github
-               :pkgname "bbatsov/projectile"
-               :depends (dash s)
                :after (projectile-global-mode)
                :features projectile)
-        (:name multi-term
-               :type emacswiki
-               :features multi-term
-               :after (setq multi-term-program "/usr/local/bin/fish"))
         (:name coffee-mode
                :type elpa
                :after (load "~/.emacs.d/coffee-custom"))
@@ -72,7 +60,7 @@
                         (add-to-list 'auto-mode-alist '("\\.sls$" . yaml-mode))))
         (:name revive-plus
                :type github
-	       :depends (revive)
+               :depends (revive)
                :after (progn
                         (setq revive-plus:all-frames t)
                         (revive-plus:minimal-setup))
@@ -82,38 +70,28 @@
 
 (setq my-el-get-packages
       '(smex
-	ido-ubiquitous
-	idle-highlight-mode
-	;; magit
-	coffee-mode
+        pkg-info
+        ido-ubiquitous
+        idle-highlight-mode
+        magit
+        coffee-mode
         yaml-mode
         markdown-mode
         flymake-python-pyflakes
-	;; helm
-	projectile
-        ;; ipython
+        projectile
         jedi
         thrift
         flymake-coffee
         ack-and-a-half
-        multi-term
         revive-plus
         frame-restore
         web-mode))
 
 (el-get 'sync my-el-get-packages)
 
- (autoload 'octave-mode "octave-mod" nil t)
+(autoload 'octave-mode "octave-mode" nil t)
           (setq auto-mode-alist
                 (cons '("\\.m$" . octave-mode) auto-mode-alist))
-
-(add-hook 'term-mode-hook
-          (lambda ()
-            (setq show-trailing-whitespace nil)))
-
-(add-hook 'shell-mode-hook
-          (lambda ()
-            (setq show-trailing-whitespace nil)))
 
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:setup-keys t)
@@ -126,9 +104,8 @@
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
-
-;; (when (display-graphic-p)
-;;   (desktop-save-mode 1))
+(when (display-graphic-p)
+  (desktop-save-mode 1))
 
 ;; Remove ffap trying to guess url when opening files.
 (setq ido-use-url-at-point nil)
@@ -141,6 +118,14 @@
   (if (string= ad-return-value "/")
       (setq ad-return-value nil)))
 (ad-activate 'ffap-file-at-point)
+
+(defun my-kill-emacs ()
+  "save some buffers, then exit unconditionally"
+  (interactive)
+  (save-some-buffers nil t)
+  (kill-emacs))
+(global-set-key (kbd "C-x C-c") 'my-kill-emacs)
+(setq vc-follow-symlinks t)
 
 (load "~/.emacs.d/misc.el" t)
 (load "~/.emacs.d/local.el" t)
