@@ -1,3 +1,5 @@
+[ -z "$PS1" ] && return
+
 # the basics
 : ${HOME=~}
 : ${LOGNAME=$(id -un)}
@@ -15,6 +17,7 @@ shopt -s extglob >/dev/null 2>&1
 shopt -s histappend >/dev/null 2>&1
 shopt -s hostcomplete >/dev/null 2>&1
 shopt -s no_empty_cmd_completion >/dev/null 2>&1
+shopt -s checkwinsize
 
 # ----------------------------------------------------------------------
 # PATH
@@ -60,7 +63,7 @@ if test -r "/usr/local/bin/virtualenvwrapper_lazy.sh"; then
   source /usr/local/bin/virtualenvwrapper_lazy.sh
 fi
 
-# Enable en_US locale w/ utf-8 encodings if not already configured
+# Enable en_US locale w/ utf-8 encodings if not already configured.
 : ${LANG:="en_US.UTF-8"}
 : ${LANGUAGE:="en"}
 : ${LC_CTYPE:="en_US.UTF-8"}
@@ -71,37 +74,34 @@ export LANG LANGUAGE LC_CTYPE LC_ALL
 : ${FTP_PASSIVE:=1}
 export FTP_PASSIVE
 
-# Ignore backups, CVS directories, python bytecode, vim swap files
+# Make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# Ignore backups, CVS directories, python bytecode, vim swap files.
 FIGNORE="~:CVS:#:.pyc:.swp:.swa:apache-solr-*"
 
-# Save more history, no dups
-export HISTCONTROL=erasedups
+# Save more history, no dups or lines starting with space.
+export HISTCONTROL=ignoreboth
 export HISTSIZE=10000
+export HISTFILESIZE=20000
 
 # Don't exit shell on accidental Ctrl-D
 export IGNOREEOF=
+
+# Turn of C-s, C-q flow control.
+stty stop ''
+stty start ''
+stty -ixon
+stty -ixoff
 
 # See what we have to work with ...
 HAVE_VIM=$(command -v vim)
 
 # EDITOR
-test -n "$HAVE_VIM" &&
-EDITOR=vim ||
-EDITOR=vi
-export EDITOR
-
-# Make nice screen titles.
-if [ "$TERM" = "screen" ]; then
-  screen_set_window_title () {
-    local HPWD="$PWD"
-    case $HPWD in
-      $HOME) HPWD="~";;
-      $HOME/*) HPWD="~${HPWD#$HOME}";;
-    esac
-    printf '\ek%s\e\\' "$HPWD"
-  }
-  PROMPT_COMMAND="screen_set_window_title; $PROMPT_COMMAND"
-fi
+# test -n "$HAVE_VIM" &&
+# EDITOR=vim ||
+# EDITOR=vi
+# export EDITOR
 
 # Add recurisve cd ...
 function cd()
@@ -137,18 +137,6 @@ extract () {
     fi
 }
 
-# Usage: puniq [<path>]
-# Remove duplicate entries from a PATH style value while retaining
-# the original order. Use PATH if no <path> is given.
-#
-# Example:
-#   $ puniq /usr/bin:/usr/local/bin:/usr/bin
-#   /usr/bin:/usr/local/bin
-puniq () {
-    echo "$1" |tr : '\n' |nl |sort -u -k 2,2 |sort -n |
-    cut -f 2- |tr '\n' : |sed -e 's/:$//' -e 's/^://'
-}
-
 # Fuzzy filename search
 function ff () {
     find . -type f -iname '*'"$@"'*' ;
@@ -165,27 +153,60 @@ PS1='`_ret=$?; if test $_ret -ne 0; then echo "$_ret:"; set ?=$_ret; unset _ret;
 test -r ~/.shenv &&
 source ~/.shenv
 
-PATH=$(puniq $PATH)
-export PATH
-
-export CLICOLOR=1
-#export LSCOLORS=ExFxCxDxBxegedabagacad
-export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+# export CLICOLOR=1
+# export LSCOLORS=ExFxCxDxBxegedabagacad
+# export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
 # ----------------------------------------------------------------------
 # ALIASES / FUNCTIONS
 # ----------------------------------------------------------------------
 
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
 # disk usage with human sizes and minimal depth
 alias fn='find . -name'
 alias hi='history | tail -20'
-alias ls='ls -Bph'
-alias ll='ls -la'
+alias ls='ls -Bph --color=auto'
+alias ll='ls -alF'
+alias l='ls -CF'
 alias pgrep='pgrep -f -l'
-alias pkill='pkill -f'
 alias shell_name="ps -p $$ | tail -1 | awk '{print $NF}'"
 
-if [ -f ~/.bash_aliases ]
-then
+if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
 fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
+
+test -r "$HOME/.homesick/repos/homeshick/homeshick.sh" &&
+source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+
+# Usage: puniq [<path>]
+# Remove duplicate entries from a PATH style value while retaining
+# the original order. Use PATH if no <path> is given.
+#
+# Example:
+#   $ puniq /usr/bin:/usr/local/bin:/usr/bin
+#   /usr/bin:/usr/local/bin
+puniq () {
+    echo "$1" |tr : '\n' |nl |sort -u -k 2,2 |sort -n |
+    cut -f 2- |tr '\n' : |sed -e 's/:$//' -e 's/^://'
+}
+
+PATH=$(puniq $PATH)
+export PATH
