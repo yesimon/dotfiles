@@ -1,0 +1,38 @@
+[global_config]
+  title_hide_sizetext = True
+  title_transmit_bg_color = "#ac4142"
+  focus = system
+  title_inactive_bg_color = "#505050"
+[keybindings]
+[profiles]
+  [[default]]
+    palette = "#3f3f3f:#cc9393:#7f9f7f:#e3ceab:#dfaf8f:#cc9393:#8cd0d3:#dcdccc:#3f3f3f:#cc9393:#7f9f7f:#e3ceab:#dfaf8f:#cc9393:#8cd0d3:#dcdccc"
+    background_image = None
+    cursor_color = "#dcdcdc"
+    foreground_color = "#dcdcdc"
+    icon_bell = False
+    show_titlebar = False
+    copy_on_selection = True
+    background_color = "#3f3f3f"
+    allow_bold = False
+  [[Base16 Default Light]]
+    palette = "#3f3f3f:#cc9393:#7f9f7f:#e3ceab:#dfaf8f:#cc9393:#8cd0d3:#dcdccc:#3f3f3f:#cc9393:#7f9f7f:#e3ceab:#dfaf8f:#cc9393:#8cd0d3:#dcdccc"
+    background_image = None
+    cursor_color = "#dcdcdc"
+    foreground_color = "#303030"
+    icon_bell = False
+    show_titlebar = False
+    copy_on_selection = True
+    background_color = "#f5f5f5"
+    allow_bold = False
+    use_theme_colors = True
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+    [[[window0]]]
+      type = Window
+      parent = ""
+[plugins]

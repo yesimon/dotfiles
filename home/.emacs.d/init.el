@@ -91,10 +91,12 @@
         color-theme-base16
         flymake-coffee
         ack-and-a-half
+        color-theme-zenburn
         revive-plus
         frame-restore
         web-mode))
 
+(el-get-cleanup my-el-get-packages)
 (el-get 'sync my-el-get-packages)
 
 (autoload 'octave-mode "octave-mode" nil t)
@@ -132,7 +134,7 @@
   (interactive)
   (save-some-buffers nil t)
   (kill-emacs))
-(global-set-key (kbd "C-x C-c") 'my-kill-emacs)
+;; (global-set-key (kbd "C-x C-c") 'my-kill-emacs)
 (setq vc-follow-symlinks t)
 
 (load "~/.emacs.d/misc.el" t)
