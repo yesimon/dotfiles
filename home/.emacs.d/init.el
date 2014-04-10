@@ -88,7 +88,6 @@
         projectile
         jedi
         thrift
-        color-theme-base16
         flymake-coffee
         ack-and-a-half
         color-theme-zenburn

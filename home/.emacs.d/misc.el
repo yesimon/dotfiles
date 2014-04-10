@@ -12,10 +12,10 @@
       diff-switches "-u")
 
 (tool-bar-mode -1)
-(menu-bar-mode -1)
-;; Remove scroll bars
-(require 'scroll-bar)
-(set-scroll-bar-mode 'nil)
+(unless (string-match "apple-darwin" system-configuration)
+  ;; on mac, there's always a menu bar drown, don't have it empty
+  (menu-bar-mode -1))
+(scroll-bar-mode -1)
 
 (require 'uniquify)
 
