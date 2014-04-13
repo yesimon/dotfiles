@@ -153,9 +153,9 @@ PS1='`_ret=$?; if test $_ret -ne 0; then echo "$_ret:"; set ?=$_ret; unset _ret;
 test -r ~/.shenv &&
 source ~/.shenv
 
-# export CLICOLOR=1
-# export LSCOLORS=ExFxCxDxBxegedabagacad
-# export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
 # ----------------------------------------------------------------------
 # ALIASES / FUNCTIONS
@@ -176,7 +176,7 @@ fi
 # disk usage with human sizes and minimal depth
 alias fn='find . -name'
 alias hi='history | tail -20'
-alias ls='ls -Bph --color=auto'
+alias ls='ls -Bph'
 alias ll='ls -alF'
 alias l='ls -CF'
 alias pgrep='pgrep -f -l'
@@ -195,6 +195,8 @@ fi
 
 test -r "$HOME/.homesick/repos/homeshick/homeshick.sh" &&
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+
+export TERM=xterm-256color
 
 # Usage: puniq [<path>]
 # Remove duplicate entries from a PATH style value while retaining
