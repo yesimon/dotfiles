@@ -40,6 +40,8 @@
 	(:name auto-complete
                :after (global-auto-complete-mode t)
 	       :features auto-complete)
+        (:name flymake-cursor
+               :features flymake-cursor)
         (:name projectile
                :after (projectile-global-mode)
                :features projectile)
@@ -85,10 +87,11 @@
         yaml-mode
         markdown-mode
         flymake-python-pyflakes
+        flymake-coffee
+        flymake-cursor
         projectile
         jedi
         thrift
-        flymake-coffee
         ack-and-a-half
         color-theme-zenburn
         revive-plus
