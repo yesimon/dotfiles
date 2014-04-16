@@ -6,6 +6,7 @@
 [keybindings]
 [profiles]
   [[default]]
+    scrollbar_position = hidden
     palette = "#3f3f3f:#cc9393:#7f9f7f:#e3ceab:#dfaf8f:#cc9393:#8cd0d3:#dcdccc:#3f3f3f:#cc9393:#7f9f7f:#e3ceab:#dfaf8f:#cc9393:#8cd0d3:#dcdccc"
     background_image = None
     cursor_color = "#dcdcdc"
