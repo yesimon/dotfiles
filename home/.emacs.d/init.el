@@ -27,7 +27,10 @@
       (eval-print-last-sexp))))
 
 (setq el-get-sources
-      '((:name flymake-python-pyflakes
+      '((:name smex
+               :after (progn (global-set-key (kbd "M-x") 'smex)
+                             (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
+        (:name flymake-python-pyflakes
                :type github
          :pkgname "purcell/flymake-python-pyflakes"
          :depends (flymake-easy)
