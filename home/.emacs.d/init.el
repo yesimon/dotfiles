@@ -30,12 +30,14 @@
       '((:name smex
                :after (progn (global-set-key (kbd "M-x") 'smex)
                              (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
+        (:name flycheck
+               :after (add-hook 'after-init-hook #'global-flycheck-mode))
         (:name flymake-python-pyflakes
                :type github
-         :pkgname "purcell/flymake-python-pyflakes"
-         :depends (flymake-easy)
-         :post-init (add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
-         :features flymake-python-pyflakes)
+               :pkgname "purcell/flymake-python-pyflakes"
+               :depends (flymake-easy)
+               :post-init (add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
+               :features flymake-python-pyflakes)
         (:name thrift
                :type http
                :url "https://raw.github.com/apache/thrift/master/contrib/thrift.el"
@@ -80,7 +82,7 @@
                :pkgname "martialboniou/revive-plus")
         ))
 
-(setq my-el-get-packages
+(defvar my-el-get-packages
       '(smex
         pkg-info
         ido-ubiquitous
@@ -89,9 +91,10 @@
         coffee-mode
         yaml-mode
         markdown-mode
-        flymake-python-pyflakes
-        flymake-coffee
-        flymake-cursor
+        flycheck
+        ;; flymake-python-pyflakes
+        ;; flymake-coffee
+        ;; flymake-cursor
         projectile
         jedi
         thrift
