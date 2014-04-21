@@ -100,6 +100,7 @@
         thrift
         ack-and-a-half
         color-theme-zenburn
+        rainbow-mode
         revive-plus
         frame-restore
         web-mode))
@@ -131,6 +132,22 @@
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
+(load-theme 'zenburn t)
+
+(custom-set-faces
+   `(flycheck-error
+      ((t (:foreground ,(cdr (assoc "zenburn-fg" zenburn-colors-alist))
+           :background ,(cdr (assoc "zenburn-red-4" zenburn-colors-alist))
+                      :weight bold :underline t))))
+   `(flycheck-warning
+      ((t (:foreground ,(cdr (assoc "zenburn-fg" zenburn-colors-alist))
+           :background "#754C24"
+                      :weight bold :underline t))))
+   `(flycheck-info
+      ((t (:foreground ,(cdr (assoc "zenburn-fg" zenburn-colors-alist))
+           :background ,(cdr (assoc "zenburn-green-1" zenburn-colors-alist))
+                      :weight bold :underline t)))))
+
 ;; Prevent ffap trying to open root paths when editing html.
 (defadvice ffap-file-at-point (after ffap-file-at-point-after-advice ())
   (if (string= ad-return-value "/")
@@ -147,5 +164,3 @@
 
 (load "~/.emacs.d/misc.el" t)
 (load "~/.emacs.d/local.el" t)
-
-(load-theme 'zenburn t)
