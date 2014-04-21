@@ -27,6 +27,13 @@ shopt -s checkwinsize
 PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/lib/python"
 PATH="/usr/local/bin:$PATH"
 
+export PYENV_ROOT="${HOME}/.pyenv"
+
+if [ -d "${PYENV_ROOT}" ]; then
+  export PATH="${PYENV_ROOT}/bin:${PATH}"
+  eval "$(pyenv init -)"
+fi
+
 test -d "$HOME/.cabal/bin" &&
 PATH="$HOME/.cabal/bin:$PATH"
 
