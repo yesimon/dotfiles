@@ -15,7 +15,8 @@
 (unless (string-match "apple-darwin" system-configuration)
   ;; on mac, there's always a menu bar drown, don't have it empty
   (menu-bar-mode -1))
-(scroll-bar-mode -1)
+(if window-system
+  (scroll-bar-mode -1))
 
 (require 'uniquify)
 
