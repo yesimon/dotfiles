@@ -42,9 +42,13 @@
                :type http
                :url "https://raw.github.com/apache/thrift/master/contrib/thrift.el"
                :features thrift)
-	(:name auto-complete
+        (:name auto-complete
                :after (global-auto-complete-mode t)
-	       :features auto-complete)
+               :features auto-complete)
+        (:name julia-mode
+               :type http
+               :url "https://raw.githubusercontent.com/JuliaLang/julia/master/contrib/julia-mode.el"
+               :features julia-mode)
         (:name flymake-cursor
                :features flymake-cursor)
         (:name projectile
@@ -92,7 +96,8 @@
         yaml-mode
         markdown-mode
         flycheck
-        go-mode
+        julia-mode
+        ;; go-mode
         ;; flymake-python-pyflakes
         ;; flymake-coffee
         ;; flymake-cursor
