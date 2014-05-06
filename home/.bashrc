@@ -204,8 +204,6 @@ fi
 test -r "$HOME/.homesick/repos/homeshick/homeshick.sh" &&
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 
-export TERM=xterm-256color
-
 # Usage: puniq [<path>]
 # Remove duplicate entries from a PATH style value while retaining
 # the original order. Use PATH if no <path> is given.

@@ -8,3 +8,6 @@ nnoremap <CR> :noh<CR><CR>
 
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+
+set t_Co=256
+colors zenburn
