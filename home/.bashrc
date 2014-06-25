@@ -104,6 +104,7 @@ stty -ixoff
 # See what we have to work with ...
 HAVE_VIM=$(command -v vim)
 
+alias vi=vim
 # EDITOR
 # test -n "$HAVE_VIM" &&
 # EDITOR=vim ||
@@ -113,12 +114,14 @@ HAVE_VIM=$(command -v vim)
 # Add recurisve cd ...
 function cd()
 {
-  local -ri n=${#*};
+  local n=${#};
   if [[ n -eq 0 ]]; then
-      builtin cd;
+    builtin cd;
+  elif [[ "${@}" =~ ^\.+ ]]; then
+    local e="s:\.\.\.:../..:g";
+    builtin cd "$(sed -e$e -e$e -e$e <<< ${@})";
   else
-      local e="s:\.\.\.:../..:g";
-      builtin cd "${@:1:$n-1}" $(sed -e$e -e$e -e$e <<< "${!n}");
+    builtin cd "${@}";
   fi
 }
 
