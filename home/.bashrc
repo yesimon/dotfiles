@@ -1,4 +1,7 @@
-[ -z "$PS1" ] && return
+case "$-" in
+ *i*) [[ -x /usr/bin/fish || -x $(which fish) ]] && fish ;;
+ *) return ;;
+esac
 
 # the basics
 : ${HOME=~}

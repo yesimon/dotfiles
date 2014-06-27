@@ -11,3 +11,4 @@
 .emacs.d/desktop
 .emacs.d/eshell
 .emacs.d/emacs.desktop
+flycheck_*.py
