@@ -1,6 +1,30 @@
+set -x PATH "$HOME/.pyenv/bin" $PATH
+status --is-interactive; and . (pyenv init -|psub)
+status --is-interactive; and . (pyenv virtualenv-init -|psub)
+
+set -x fish_user_paths "$HOME/bin" $fish_user_paths
+
 source "$HOME/.homesick/repos/homeshick/homeshick.fish"
 
 source "$HOME/bin/virtual.fish"
+
+if test -e "$HOME/.config/fish/local.fish"
+   source "$HOME/.config/fish/local.fish"
+end
+
+function tmux
+  env TERM=xterm-256color tmux
+end
+
+function ack
+  ack-grep $argv
+end
+
+function e
+  emacsclient -t $argv
+end
+
+# Clean up $PATH.
 
 function inc --description 'Increase the value of variable' --no-scope-shadowing
   set $argv[1] (expr $$argv[1] + 1)
@@ -31,4 +55,3 @@ end
 # set -x fish_user_paths $fish_user_paths /usr/local/bin
 set -g -x PATH /usr/local/bin /usr/local/sbin $PATH
 varclear PATH
-
