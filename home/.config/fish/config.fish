@@ -3,17 +3,23 @@ status --is-interactive; and . (pyenv init -|psub)
 status --is-interactive; and . (pyenv virtualenv-init -|psub)
 
 set -x fish_user_paths "$HOME/bin" $fish_user_paths
+set -x fish_user_paths "/usr/local/go/bin" "$HOME/go/bin" $fish_user_paths
+set -x GOPATH "$HOME/go"
 
 source "$HOME/.homesick/repos/homeshick/homeshick.fish"
 
 source "$HOME/bin/virtual.fish"
 
 if test -e "$HOME/.config/fish/local.fish"
-   source "$HOME/.config/fish/local.fish"
+  source "$HOME/.config/fish/local.fish"
 end
 
 function tmux
   env TERM=xterm-256color tmux
+end
+
+function emacs
+  env TERM=xterm-256color emacs $argv
 end
 
 function ack
@@ -42,8 +48,6 @@ function varclear --description 'Remove duplicates from environment variable'
             end
         end
         set $argv $newvar
-        test $count -gt 0
-        and echo Removed $count duplicates from $argv
     else
         for a in $argv
             varclear $a
