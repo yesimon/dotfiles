@@ -126,8 +126,12 @@
 
 ;; Disable auto-newline in html mode
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
+(add-hook 'web-mode-hook 'turn-off-auto-fill)
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+(eval-after-load "vc" '(remove-hook 'find-file-hooks 'vc-find-file-hook))
+(setq vc-handled-backends ())
 
 (when (display-graphic-p)
   (desktop-save-mode 1))
