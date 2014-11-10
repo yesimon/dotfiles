@@ -35,6 +35,9 @@
   (when (> (display-color-cells) 8)
     (hl-line-mode t)))
 
+
+(global-set-key (kbd "C-c q") 'auto-fill-mode)
+
 (add-hook 'prog-mode-hook 'esk-local-comment-auto-fill)
 (add-hook 'prog-mode-hook 'esk-turn-on-hl-line-mode)
 (add-hook 'prog-mode-hook 'esk-pretty-lambdas)
@@ -92,6 +95,15 @@
 (set-default 'indent-tabs-mode nil)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+;; Zap-up-to-char
+(autoload 'zap-up-to-char "misc"
+  "Kill up to, but not including ARGth occurrence of CHAR.
+
+  \(fn arg char)"
+  'interactive)
+(global-set-key (kbd "M-z") 'zap-up-to-char)
+(global-set-key (kbd "M-Z") (lambda (char) (interactive "cZap up to char backwards: ") (zap-up-to-char -1 char)))
 
 ;; Keybindings
 
