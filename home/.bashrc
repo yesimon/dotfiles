@@ -47,6 +47,8 @@ test -r "$HOME/.rvm/scripts/rvm" &&
 # put ~/bin on PATH if you have it
 test -d "$HOME/bin" &&
 PATH="$HOME/bin:$PATH"
+test -d "$HOME/local/bin" &&
+PATH="$HOME/local/bin:$PATH"
 test -d "$HOME/bin/x86_64" &&
 PATH="$HOME/bin/x86_64:$PATH"
 
