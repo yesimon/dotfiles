@@ -9,8 +9,16 @@ if test -d "$HOME/go"
    set -x fish_user_paths "/usr/local/go/bin" "$HOME/go/bin" $fish_user_paths
 end
 
-set -x fish_user_paths "$HOME/bin" "$HOME/local/bin" $fish_user_paths
+set -x fish_user_paths "$HOME/bin" $fish_user_paths
 source "$HOME/.homesick/repos/homeshick/homeshick.fish"
+
+if test -d "$HOME/local/bin"
+  set -x fish_user_paths "$HOME/local/bin" $fish_user_paths
+end
+
+if test -d "$HOME/.local/bin"
+  set -x fish_user_paths "$HOME/.local/bin" $fish_user_paths
+end
 
 source "$HOME/bin/virtual.fish"
 
@@ -24,7 +32,7 @@ if test -e "$HOME/.config/fish/local.fish"
 end
 
 function tmux
-  env TERM=xterm-256color tmux
+  env TERM=xterm-256color tmux $argv
 end
 
 function emacs
