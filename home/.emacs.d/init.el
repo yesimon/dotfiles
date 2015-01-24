@@ -26,10 +26,6 @@
                              (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
         (:name flycheck
                :after (add-hook 'after-init-hook #'global-flycheck-mode))
-        (:name thrift
-               :type http
-               :url "https://raw.github.com/apache/thrift/master/contrib/thrift.el"
-               :features thrift)
         (:name auto-complete
                :after (global-auto-complete-mode t)
                :features auto-complete)
@@ -37,6 +33,12 @@
                :type http
                :url "https://raw.githubusercontent.com/JuliaLang/julia/master/contrib/julia-mode.el"
                :features julia-mode)
+        (:name rust-mode
+               :type http
+               :url "https://raw.github.com/mozilla/rust/master/src/etc/emacs/rust-mode.el"
+               :description "Emacs mode for Rust"
+               :features rust-mode
+               :after (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))
         (:name projectile
                :after (projectile-global-mode)
                :features projectile)
@@ -89,10 +91,10 @@
     markdown-mode
     flycheck
     julia-mode
+    rust-mode
     ;; go-mode
     projectile
     jedi
-    thrift
     ack
     ag
     color-theme-zenburn
