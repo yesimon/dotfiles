@@ -1,7 +1,9 @@
+set -g -x PATH /usr/local/bin /usr/local/sbin $PATH
+
 if test -d "$HOME/.pyenv"
  set -x PATH "$HOME/.pyenv/bin" $PATH
  status --is-interactive; and . (pyenv init -|psub)
- status --is-interactive; and . (pyenv virtualenv-init -|psub)
+ # status --is-interactive; and . (pyenv virtualenv-init -|psub)
 end
 
 if test -d "$HOME/go"
@@ -74,5 +76,4 @@ end
 
 # Add this back when it works again.
 # set -x fish_user_paths $fish_user_paths /usr/local/bin
-set -g -x PATH /usr/local/bin /usr/local/sbin $PATH
 varclear PATH
