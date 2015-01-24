@@ -1,47 +1,48 @@
 [user]
-    name = Simon Ye
+  name = Simon Ye
 [core]
-    excludesfile = ~/.gitignore
+  excludesfile = ~/.gitignore
+  editor = vim -f
 [color]
-    ui = auto
+  ui = auto
 [color "branch"]
-    current = yellow reverse
-    local = yellow
-    remote = green
+  current = yellow reverse
+  local = yellow
+  remote = green
 [color "diff"]
-    meta = yellow bold
-    frag = magenta bold
-    old = red bold
-    new = green bold
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
+  added = yellow
+  changed = green
+  untracked = cyan
 [merge]
-    tool = diffmerge
+  tool = diffmerge
 [mergetool "diffmerge"]
-    cmd = diffmerge --merge --result=$MERGED $LOCAL $BASE $REMOTE
-    trustExitCode = true
+  cmd = diffmerge --merge --result=$MERGED $LOCAL $BASE $REMOTE
+  trustExitCode = true
 [mergetool]
-    keepBackup = false
+  keepBackup = false
 [diff]
-    tool = diffmerge
+  tool = diffmerge
 [difftool "diffmerge"]
-    cmd = diffmerge $LOCAL $REMOTE
+  cmd = diffmerge $LOCAL $REMOTE
 [alias]
-    panic = !tar cvf ../git_panic.tar .
-    tarball = !~/bin/git-tarball
-    co = checkout
-    br = branch
-    fix = commit --amend -C HEAD
-    staged = diff --staged
-    unstage = reset HEAD
-    wtf = !~/bin/git-wtf
-    trash = !"git commit -a -m 'Abandoned changes' && git reset --hard HEAD^"
-    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative # Branch visualization
-    lost = !"git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset %f' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
-    heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
+  panic = !tar cvf ../git_panic.tar .
+  tarball = !~/bin/git-tarball
+  co = checkout
+  br = branch
+  fix = commit --amend -C HEAD
+  staged = diff --staged
+  unstage = reset HEAD
+  wtf = !~/bin/git-wtf
+  trash = !"git commit -a -m 'Abandoned changes' && git reset --hard HEAD^"
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative # Branch visualization
+  lost = !"git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset %f' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
+  heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
 [include]
-    path = ~/.local.gitconfig
+  path = ~/.local.gitconfig
 [push]
-	default = simple
+  default = simple
