@@ -94,6 +94,10 @@
       ido-max-prospects 10)
 (set-default 'indent-tabs-mode nil)
 
+(add-hook 'python-mode-hook
+          (lambda ()
+            (define-key python-mode-map "\r" 'newline-and-indent)))
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Zap-up-to-char
