@@ -91,7 +91,7 @@
     markdown-mode
     flycheck
     julia-mode
-    rust-mode
+    ;; rust-mode
     ;; go-mode
     projectile
     jedi

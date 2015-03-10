@@ -12,13 +12,17 @@
       diff-switches "-u")
 
 (tool-bar-mode -1)
-(unless (string-match "apple-darwin" system-configuration)
-  ;; on mac, there's always a menu bar drown, don't have it empty
-  (menu-bar-mode -1))
+(menu-bar-mode -1)
 (if window-system
-  (scroll-bar-mode -1))
+    (progn
+      (scroll-bar-mode -1)
+      (unless (string-match "apple-darwin" system-configuration)
+        ;; on mac, there's always a menu bar drawn, don't have it empty
+        (menu-bar-mode -1))))
 
 (require 'uniquify)
+(require 'saveplace)
+(setq-default save-place t)
 
 (defun esk-pretty-lambdas ()
   (font-lock-add-keywords
@@ -35,7 +39,6 @@
   (when (> (display-color-cells) 8)
     (hl-line-mode t)))
 
-
 (global-set-key (kbd "C-c q") 'auto-fill-mode)
 
 (add-hook 'prog-mode-hook 'esk-local-comment-auto-fill)
@@ -48,6 +51,9 @@
 
 ;; Show column number
 (column-number-mode)
+
+;; Delete when pressing key on highlighted region.
+(delete-selection-mode 1)
 
 ;; Delete and show trailing whitespace
 (setq-default show-trailing-whitespace t)
@@ -94,9 +100,8 @@
       ido-max-prospects 10)
 (set-default 'indent-tabs-mode nil)
 
-(add-hook 'python-mode-hook
-          (lambda ()
-            (define-key python-mode-map "\r" 'newline-and-indent)))
+;; Kill current buffer without confirmation.
+(global-set-key (kbd "\C-x k") 'kill-this-buffer)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -109,8 +114,23 @@
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 (global-set-key (kbd "M-Z") (lambda (char) (interactive "cZap up to char backwards: ") (zap-up-to-char -1 char)))
 
-;; Keybindings
+(defun sudo-edit (&optional arg)
+    "Edit currently visited file as root.
 
+With a prefix ARG prompt for a file to visit.
+Will also prompt for a file to visit if current
+buffer is not visiting a file."
+    (interactive "P")
+    (if (or arg (not buffer-file-name))
+        (find-file (concat "/sudo:root@localhost:"
+                           (ido-read-file-name "Find file(as root): ")))
+      (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (define-key python-mode-map "\r" 'newline-and-indent)))
+
+;; Keybindings
 (global-set-key (kbd "C-x C-b") 'ibuffer) ;; Use Ibuffer for Buffer
 (global-set-key (kbd "C-x C-d") 'dired) ;; Use Dired
 
@@ -133,3 +153,5 @@
 
 ;; Jump to a definition in the current file. (Protip: this is awesome.)
 (global-set-key (kbd "C-x C-i") 'imenu)
+
+(setq tramp-default-method "ssh")
