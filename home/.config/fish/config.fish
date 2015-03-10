@@ -1,4 +1,5 @@
 set -g -x PATH /usr/local/bin /usr/local/sbin $PATH
+set -x SHELL fish
 
 if test -d "$HOME/.pyenv"
  set -x PATH "$HOME/.pyenv/bin" $PATH
