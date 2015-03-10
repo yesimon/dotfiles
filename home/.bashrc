@@ -1,7 +1,9 @@
-case "$-" in
- *i*) [[ -x /usr/bin/fish || -x $(which fish) ]] && fish ;;
- *) return ;;
-esac
+if [[ "$NOFISH" -ne 1 ]]; then
+    case "$-" in
+        *i*) [[ -x /usr/bin/fish || -x $(which fish) ]] && fish ;;
+        *) return ;;
+    esac
+fi
 
 # the basics
 : ${HOME=~}
