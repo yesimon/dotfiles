@@ -12,6 +12,11 @@ if test -d "$HOME/go"
    set -x fish_user_paths "/usr/local/go/bin" "$HOME/go/bin" $fish_user_paths
 end
 
+# Set up perl's local::lib
+if test -d "$HOME/perl5"
+   eval (perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+end
+
 set -x fish_user_paths "$HOME/bin" $fish_user_paths
 source "$HOME/.homesick/repos/homeshick/homeshick.fish"
 
