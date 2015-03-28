@@ -1,5 +1,10 @@
 set -g -x PATH /usr/local/bin /usr/local/sbin $PATH
-set -x SHELL fish
+switch (uname)
+  case Linux
+    set -x SHELL /usr/bin/fish
+  case Darwin
+    set -x SHELL /usr/local/bin/fish
+end
 
 if test -d "$HOME/.pyenv"
  set -x PATH "$HOME/.pyenv/bin" $PATH
@@ -33,7 +38,6 @@ source "$HOME/bin/virtual.fish"
 set -x PIP_USE_WHEEL "true"
 set -x PIP_WHEEL_DIR "$HOME/.pip/wheels"
 set -x PIP_FIND_LINKS "$HOME/.pip/wheels"
-set -x PIP_DOWNLOAD_CACHE "$HOME/.pip/cache"
 
 if test -e "$HOME/.config/fish/local.fish"
   source "$HOME/.config/fish/local.fish"
