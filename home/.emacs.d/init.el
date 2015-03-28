@@ -64,6 +64,8 @@
                :features web-mode
                :after (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
                :pkgname "fxbois/web-mode")
+        (:name groovy-emacs-mode
+               :after (add-to-list 'auto-mode-alist '("\\.fs$" . groovy-emacs-mode)))
         (:name yaml-mode
                :features yaml-mode
                :after (progn
@@ -91,6 +93,8 @@
     markdown-mode
     flycheck
     julia-mode
+    cmake-mode
+    groovy-emacs-mode
     ;; rust-mode
     ;; go-mode
     projectile
