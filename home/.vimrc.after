@@ -1,10 +1,20 @@
+" Change to directory of current working file.
+set autochdir
+
+" Remove trailing whitespace on save.
 autocmd BufWritePre * :%s/\s\+$//e
 
-:set guioptions-=T  "remove toolbar
-:set guioptions-=r  "remove right-hand scroll bar
+set guioptions-=T  "Remove toolbar
+set guioptions-=r  "Remove right-hand scroll bar
+
+" Clear search highlighting on second enter.
 nnoremap <CR> :noh<CR><CR>
 
-:set wildmenu
+" Allow switching buffer with unsaved changes.
+set hidden
+
+set wildmenu
+let g:ctrlp_clear_cache_on_exit = 0
 
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
@@ -12,4 +22,17 @@ let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 set t_Co=256
 colors zenburn
 
+" Use :w!! to resave using sudo.
 cmap w!! w !sudo tee > /dev/null %
+
+" Use the right side of the screen for buffergator
+let g:buffergator_viewport_split_policy = 'R'
+
+" Open NERDTree on right side.
+let g:NERDTreeWinPos = "right"
+
+" Open help in vertical split.
+autocmd FileType help wincmd L
+
+" Python syntax for Snakemake
+au BufNewFile,BufRead Snakefile set syntax=python
