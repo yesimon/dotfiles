@@ -61,6 +61,11 @@ function e
   emacsclient -t $argv
 end
 
+function cd-python
+  cd (python -c "import os.path as _, $argv[1]; \
+    print(_.dirname(_.realpath($argv[1].__file__[:-1])))")
+end
+
 # Clean up $PATH.
 
 function inc --description 'Increase the value of variable' --no-scope-shadowing
