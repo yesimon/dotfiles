@@ -7,6 +7,35 @@
 [keybindings]
 [profiles]
   [[default]]
+    background_image = None
+  [[Base16 Default Light]]
+    palette = "#2d2d2d:#f2777a:#99cc99:#ffcc66:#6699cc:#cc99cc:#66cccc:#d3d0c8:#747369:#f2777a:#99cc99:#ffcc66:#6699cc:#cc99cc:#66cccc:#f2f0ec"
+    background_image = None
+    cursor_color = "#d3d0c8"
+    foreground_color = "#d3d0c8"
+    icon_bell = False
+    show_titlebar = False
+    copy_on_selection = True
+    background_color = "#2d2d2d"
+  [[Solarized Light]]
+    palette = "#073642:#d30102:#859900:#b58900:#6c71c4:#d33682:#2aa198:#839496:#586e75:#cb4b16:#859900:#b58900:#268bd2:#d33682:#2aa198:#93a1a1"
+    background_image = None
+    cursor_color = "#002b36"
+    foreground_color = "#002b36"
+    icon_bell = False
+    show_titlebar = False
+    copy_on_selection = True
+    background_color = "#eee8d5"
+  [[Solarized Dark]]
+    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    background_image = None
+    cursor_color = "#eee8d5"
+    foreground_color = "#eee8d5"
+    icon_bell = False
+    show_titlebar = False
+    copy_on_selection = True
+    background_color = "#002b36"
+  [[Zenburn]]
     scrollbar_position = hidden
     palette = "#3f3f3f:#cc9393:#7f9f7f:#e3ceab:#dfaf8f:#cc9393:#8cd0d3:#dcdccc:#3f3f3f:#cc9393:#7f9f7f:#e3ceab:#dfaf8f:#cc9393:#8cd0d3:#dcdccc"
     background_image = None
@@ -16,24 +45,12 @@
     show_titlebar = False
     copy_on_selection = True
     background_color = "#3f3f3f"
-    allow_bold = False
-  [[Base16 Default Light]]
-    palette = "#3f3f3f:#cc9393:#7f9f7f:#e3ceab:#dfaf8f:#cc9393:#8cd0d3:#dcdccc:#3f3f3f:#cc9393:#7f9f7f:#e3ceab:#dfaf8f:#cc9393:#8cd0d3:#dcdccc"
-    background_image = None
-    cursor_color = "#dcdcdc"
-    foreground_color = "#303030"
-    icon_bell = False
-    show_titlebar = False
-    copy_on_selection = True
-    background_color = "#f5f5f5"
-    allow_bold = False
-    use_theme_colors = True
 [layouts]
   [[default]]
     [[[child1]]]
       type = Terminal
       parent = window0
-      profile = default
+      profile = Zenburn
     [[[window0]]]
       type = Window
       parent = ""
