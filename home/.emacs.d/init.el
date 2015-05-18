@@ -1,3 +1,8 @@
+;; (let ((benchmark-init.el "~/.emacs.d/el-get/benchmark-init/benchmark-init.el"))
+;;   (when (file-exists-p benchmark-init.el)
+;;     (load benchmark-init.el)))
+;; (benchmark-init/activate)
+
 (require 'package)
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/"))
@@ -5,7 +10,6 @@
              '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/"))
-(package-initialize)
 
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 
@@ -33,12 +37,9 @@
                :type http
                :url "https://raw.githubusercontent.com/JuliaLang/julia/master/contrib/julia-mode.el"
                :features julia-mode)
-        (:name rust-mode
-               :type http
-               :url "https://raw.github.com/mozilla/rust/master/src/etc/emacs/rust-mode.el"
-               :description "Emacs mode for Rust"
-               :features rust-mode
-               :after (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))
+        (:name fish-mode
+               :type github
+               :pkgname "wwwjfy/emacs-fish")
         (:name projectile
                :after (projectile-global-mode)
                :features projectile)
@@ -95,8 +96,9 @@
     julia-mode
     cmake-mode
     groovy-emacs-mode
-    ;; rust-mode
-    ;; go-mode
+    fish-mode
+    rust-mode
+    go-mode
     projectile
     jedi
     ack
@@ -105,14 +107,28 @@
     rainbow-mode
     revive-plus
     frame-restore
-    web-mode))
+    benchmark-init
+    web-mode
+    org-mode))
 
 (el-get-cleanup my-el-get-packages)
 (el-get 'sync my-el-get-packages)
+(package-initialize)
 
 (autoload 'octave-mode "octave-mode" nil t)
           (setq auto-mode-alist
                 (cons '("\\.m$" . octave-mode) auto-mode-alist))
+
+(add-to-list 'auto-mode-alist '("\\.plist$" . xml-mode))
+
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+
+(add-hook 'org-mode-hook
+          (lambda () (turn-on-auto-fill)
+            (set-fill-column 80)))
 
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:setup-keys t)
@@ -167,3 +183,4 @@
 
 (load "~/.emacs.d/misc.el" t)
 (load "~/.emacs.d/local.el" t)
+;; (byte-recompile-directory (expand-file-name "~/.emacs.d") 0)

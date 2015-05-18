@@ -20,6 +20,8 @@
         ;; on mac, there's always a menu bar drawn, don't have it empty
         (menu-bar-mode -1))))
 
+(setq custom-file "~/.emacs.d/custom.el")
+
 (require 'uniquify)
 (require 'saveplace)
 (setq-default save-place t)
@@ -55,8 +57,10 @@
 ;; Delete when pressing key on highlighted region.
 (delete-selection-mode 1)
 
-;; Delete and show trailing whitespace
-(setq-default show-trailing-whitespace t)
+;; Show trailing whitespace for files
+(add-hook 'find-file-hook (lambda ()
+                            (setq-local show-trailing-whitespace t)))
+;; Delete trailing whitespace on save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'before-save-hook 'delete-trailing-blank-lines)
 (defun delete-trailing-blank-lines ()
