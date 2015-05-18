@@ -36,3 +36,5 @@ autocmd FileType help wincmd L
 
 " Python syntax for Snakemake
 au BufNewFile,BufRead Snakefile set syntax=python
+
+set tags=./tags;
