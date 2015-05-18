@@ -53,8 +53,10 @@ function emacs
   env TERM=xterm-256color emacs $argv
 end
 
-function ack
-  ack-grep $argv
+if [ -f /etc/debian_version ]
+  function ack
+    ack-grep $argv
+  end
 end
 
 function e
