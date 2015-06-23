@@ -12,3 +12,4 @@
 .emacs.d/eshell
 .emacs.d/emacs.desktop
 flycheck_*.py
+tags
