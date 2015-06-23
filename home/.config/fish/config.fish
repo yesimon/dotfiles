@@ -14,7 +14,12 @@ end
 
 if test -d "$HOME/go"
   set -x GOPATH "$HOME/go"
-  set -x fish_user_paths "/usr/local/go/bin" "$HOME/go/bin" $fish_user_paths
+  set -x fish_user_paths "$HOME/go/bin" $fish_user_paths
+  if test -d "/usr/local/opt/go"
+    set -x fish_user_paths "/usr/local/opt/go/libexec/bin" $fish_user_paths
+  else if test -d "/usr/local/go/bin"
+    set -x fish_user_paths "/usr/local/go/bin" $fish_user_paths
+  end
 end
 
 # Set up perl's local::lib
