@@ -1,5 +1,5 @@
-" Change to directory of current working file.
-set autochdir
+"" Change to directory of current working file.
+"set autochdir
 
 " Remove trailing whitespace on save.
 autocmd BufWritePre * :%s/\s\+$//e
@@ -38,3 +38,5 @@ autocmd FileType help wincmd L
 au BufNewFile,BufRead Snakefile set syntax=python
 
 set tags=./tags;
+let g:easytags_dynamic_files = 2
+let g:easytags_events = ['BufWritePost']

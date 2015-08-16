@@ -3,3 +3,6 @@ call janus#disable_plugin('vim-snippets')
 call janus#disable_plugin('vimwiki')
 
 let g:ctrlp_cmd = 'CtrlPMixed'
+
+let g:rooter_disable_map = 1
+
