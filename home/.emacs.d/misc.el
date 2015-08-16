@@ -4,7 +4,7 @@
       shift-select-mode nil
       mouse-yank-at-point t
       uniquify-buffer-name-style 'post-forward-angle-brackets
-      whitespace-style '(face trailing lines-tail tabs)
+      whitespace-style '(face trailing tabs newline tab-mark newline-mark)
       whitespace-line-column 80
       ediff-window-setup-function 'ediff-setup-windows-plain
       save-place-file (concat user-emacs-directory "places")
@@ -80,9 +80,6 @@
 ;; Remove backup and auto-saves.
 (setq auto-save-file-name-transforms
       `((".*" , temporary-file-directory t)))
-
-;; Show trailing whitespace
-(setq whitespace-style '(trailing tabs newline tab-mark newline-mark))
 
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b")))
