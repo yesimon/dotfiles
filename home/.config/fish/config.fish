@@ -8,6 +8,13 @@ case Darwin
   set -x LESSOPEN "|/usr/local/bin/lesspipe.sh %s"
 end
 
+if type -P keychain 2>&1 > /dev/null
+  if status --is-interactive
+    eval keychain -Q --quiet --agents ssh id_rsa metag.pem
+    source $HOME/.keychain/(hostname)-fish
+  end
+end
+
 # Python setup
 if test -d "$HOME/.pyenv"
   set -x PATH "$HOME/.pyenv/bin" $PATH
