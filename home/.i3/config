@@ -170,6 +170,8 @@ bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
 bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
 bindsym XF86AudioMute exec amixer -D pulse sset Master toggle
 
+exec --no-startup-id dropbox start
 exec --no-startup-id unity-settings-daemon
 exec --no-startup-id xautolock -time 10 -locker "i3lock -c 000000; sleep 3; xset dpms force off"
+exec --no-startup-id ~/src/lightsOn/lightsOn.sh 120 &
 bindsym Control+$mod+l exec --no-startup-id "i3lock -c 000000; sleep 3; xset dpms force off"
