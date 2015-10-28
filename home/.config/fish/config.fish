@@ -3,16 +3,17 @@ switch (uname)
 case Linux
   set -x SHELL /usr/bin/fish
   set -x LESSOPEN "|/usr/bin/lesspipe %s"
+
+  if type -P keychain 2>&1 > /dev/null
+    if status --is-interactive
+      eval keychain -Q --quiet --agents ssh id_rsa metag.pem
+      source $HOME/.keychain/(hostname)-fish
+    end
+  end
+
 case Darwin
   set -x SHELL /usr/local/bin/fish
   set -x LESSOPEN "|/usr/local/bin/lesspipe.sh %s"
-end
-
-if type -P keychain 2>&1 > /dev/null
-  if status --is-interactive
-    eval keychain -Q --quiet --agents ssh id_rsa metag.pem
-    source $HOME/.keychain/(hostname)-fish
-  end
 end
 
 # Python setup
