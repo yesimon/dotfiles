@@ -27,9 +27,7 @@ if test -d "$HOME/.local/bin"
   set -x fish_user_paths "$HOME/.local/bin" $fish_user_paths
 end
 
-if test -e "$HOME/bin/virtual.fish"
-  source "$HOME/bin/virtual.fish"
-end
+eval (python -m virtualfish)
 
 set -x PIP_USE_WHEEL "true"
 set -x PIP_WHEEL_DIR "$HOME/.pip/wheels"
@@ -38,11 +36,13 @@ set -x PIP_FIND_LINKS "$HOME/.pip/wheels"
 # Go lang setup
 if test -d "$HOME/go"
   set -x GOPATH "$HOME/go"
-  set -x fish_user_paths "$HOME/go/bin" $fish_user_paths
-  if test -d "/usr/local/opt/go"
-    set -x fish_user_paths "/usr/local/opt/go/libexec/bin" $fish_user_paths
+  if test -d "$HOME/go/bin"
+    set -x fish_user_paths "$HOME/go/bin" $fish_user_paths
   else if test -d "/usr/local/go/bin"
     set -x fish_user_paths "/usr/local/go/bin" $fish_user_paths
+  end
+  if test -d "/usr/local/opt/go"
+    set -x fish_user_paths "/usr/local/opt/go/libexec/bin" $fish_user_paths
   end
 end
 
