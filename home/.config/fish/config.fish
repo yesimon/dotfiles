@@ -29,8 +29,12 @@ end
 
 # Cuda setup for Linux
 if test -d /usr/local/cuda
-  set -x fish_user_paths /usr/local/cuda/bin $fish_user_paths
-  set -x LD_LIBRARY_PATH "/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+  set -x PATH $PATH /usr/local/cuda/bin
+  if test -z "$LD_LIBRARY_PATH"
+    set -x LD_LIBRARY_PATH "/usr/local/cuda/lib64"
+  else
+    set -x LD_LIBRARY_PATH "/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+  end
 end
 
 eval (python3 -m virtualfish) 2>&1 /dev/null
