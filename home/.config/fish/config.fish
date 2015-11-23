@@ -27,7 +27,13 @@ if test -d "$HOME/.local/bin"
   set -x fish_user_paths "$HOME/.local/bin" $fish_user_paths
 end
 
-eval (python -m virtualfish)
+# Cuda setup for Linux
+if test -d /usr/local/cuda
+  set -x fish_user_paths /usr/local/cuda/bin $fish_user_paths
+  set -x LD_LIBRARY_PATH "/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+end
+
+eval (python3 -m virtualfish) 2>&1 /dev/null
 
 set -x PIP_USE_WHEEL "true"
 set -x PIP_WHEEL_DIR "$HOME/.pip/wheels"
@@ -99,11 +105,12 @@ function varclear --description 'Remove duplicates from environment variable'
     for v in $$argv
       if contains -- $v $newvar
         inc count
-          else
-            set newvar $newvar $v
-          end
+      else
+        set newvar $newvar $v
       end
-      set $argv $newvar
+    end
+    set $argv $newvar
+    test $count -gt 0
   else
     for a in $argv
       varclear $a
