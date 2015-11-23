@@ -30,11 +30,7 @@ end
 # Cuda setup for Linux
 if test -d /usr/local/cuda
   set -x PATH $PATH /usr/local/cuda/bin
-  if test -z "$LD_LIBRARY_PATH"
-    set -x LD_LIBRARY_PATH "/usr/local/cuda/lib64"
-  else
-    set -x LD_LIBRARY_PATH "/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
-  end
+  set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/local/cuda/lib64"
 end
 
 eval (python3 -m virtualfish) 2>&1 /dev/null
@@ -122,6 +118,12 @@ function varclear --description 'Remove duplicates from environment variable'
   end
 end
 
+function puniq --description 'Remove duplicates from colon separated path variable'
+  echo $$argv[1] |tr : '\n' |nl |sort -u -k 2,2 |sort -n | \
+  cut -f 2- |tr '\n' : |sed -e 's/:$//' -e 's/^://'
+end
+
+
 function fish_load_colors --description 'Restore colors'
   set fish_color_autosuggestion 777
   set fish_color_command blue
@@ -155,3 +157,4 @@ fish_load_colors
 # Add this back when it works again.
 # set -x fish_user_paths $fish_user_paths /usr/local/bin
 varclear PATH
+set -x LD_LIBRARY_PATH (puniq LD_LIBRARY_PATH)
