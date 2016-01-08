@@ -33,7 +33,8 @@ if test -d /usr/local/cuda
   set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/local/cuda/lib64"
 end
 
-eval (python3 -m virtualfish) 2>&1 /dev/null
+
+status --is-interactive; and eval (python3 -m virtualfish ^ /dev/null)
 
 set -x PIP_USE_WHEEL "true"
 set -x PIP_WHEEL_DIR "$HOME/.pip/wheels"
