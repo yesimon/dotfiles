@@ -164,11 +164,14 @@ bar {
 workspace_auto_back_and_forth yes
 
 for_window [class="Skype"] floating enable
+for_window [class="mpv"] sticky enable
 exec --no-startup-id nm-applet
 
-bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
-bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
-bindsym XF86AudioMute exec amixer -D pulse sset Master toggle
+bindsym XF86AudioRaiseVolume exec "amixer -D pulse sset Master 5%+; killall -USR1 i3status"
+bindsym XF86AudioLowerVolume exec "amixer -D pulse sset Master 5%-; killall -USR1 i3status"
+bindsym XF86AudioMute exec "amixer -D pulse sset Master toggle; killall -USR1 i3status"
+#Pause actually works as a play toggle for MPRIS interfaces.
+bindsym XF86AudioPlay exec qdbus org.mpris.clementine /Player Pause
 
 exec --no-startup-id dropbox start
 exec --no-startup-id unity-settings-daemon
