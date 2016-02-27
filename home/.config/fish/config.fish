@@ -54,10 +54,14 @@ if test -d "$HOME/go"
 end
 
 # Perl setup
-# Set up perl's local::lib
-if test -d "$HOME/perl5"
-  eval (perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+if test -d "$HOME/perl5/perlbrew"
+   . ~/perl5/perlbrew/etc/perlbrew.fish
 end
+
+# Set up perl's local::lib
+# if test -d "$HOME/perl5"
+#   eval (perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+# end
 
 set -x fish_user_paths "$HOME/bin" $fish_user_paths
 source "$HOME/.homesick/repos/homeshick/homeshick.fish"
