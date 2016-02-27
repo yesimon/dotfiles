@@ -28,10 +28,14 @@ values."
      markdown
      org
      osx
+     c-c++
+     d
      python
      rust
      salt
+     scala
      shell
+     shell-scripts
      syntax-checking
      )
    ;; List of additional packages that will be installed without being
@@ -231,6 +235,7 @@ layers configuration. You are free to put any user code."
     (use-package tramp-sh
       :config
       (add-to-list 'tramp-remote-path 'tramp-own-remote-path)))
+  (setq shell-file-name "bash")
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
