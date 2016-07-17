@@ -13,9 +13,15 @@ case Linux
     end
   end
 
+  set -x GPG_TTY (tty)
+
 case Darwin
   set -x SHELL /usr/local/bin/fish
   set -x LESSOPEN "|/usr/local/bin/lesspipe.sh %s"
+end
+
+if test -d "$HOME/.local/bin"
+  set -x PATH "$HOME/.local/bin" $PATH
 end
 
 # Python setup
@@ -24,9 +30,6 @@ if test -d "$HOME/.pyenv"
   . (pyenv virtualenv-init -|psub)
 end
 
-if test -d "$HOME/.local/bin"
-  set -x fish_user_paths "$HOME/.local/bin" $fish_user_paths
-end
 
 # Cuda setup for Linux
 if test -d /usr/local/cuda

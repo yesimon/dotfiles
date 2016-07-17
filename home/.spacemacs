@@ -101,8 +101,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+   dotspacemacs-default-font '("DejaVu Sans Mono"
+                               :size 14
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -218,6 +218,7 @@ layers configuration. You are free to put any user code."
   (add-to-list 'auto-mode-alist '("\\.sls\\'" . yaml-mode))
   (add-to-list 'auto-mode-alist '("\\.sf$" . snakemake-mode))
   (add-to-list 'auto-mode-alist '("\\.rules$" . snakemake-mode))
+  (add-to-list 'auto-mode-alist '("\\.rl$" . julia-mode))
   (setq vc-follow-symlinks t)
   ;; Show trailing whitespace for files
   (add-hook 'find-file-hook (lambda ()

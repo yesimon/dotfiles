@@ -171,7 +171,13 @@ bindsym XF86AudioRaiseVolume exec "amixer -D pulse sset Master 5%+; killall -USR
 bindsym XF86AudioLowerVolume exec "amixer -D pulse sset Master 5%-; killall -USR1 i3status"
 bindsym XF86AudioMute exec "amixer -D pulse sset Master toggle; killall -USR1 i3status"
 #Pause actually works as a play toggle for MPRIS interfaces.
-bindsym XF86AudioPlay exec qdbus org.mpris.clementine /Player Pause
+# bindsym XF86AudioPlay exec qdbus org.mpris.clementine /Player Pause
+
+bindsym XF86AudioPlay exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
+bindsym XF86AudioStop exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop"
+bindsym XF86AudioPrev exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
+bindsym XF86AudioNext exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+
 
 exec --no-startup-id dropbox start
 exec --no-startup-id unity-settings-daemon
