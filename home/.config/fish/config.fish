@@ -1,4 +1,6 @@
-set -g -x PATH /usr/local/bin /usr/local/sbin $PATH
+set -g -x PATH /usr/local/bin $PATH
+
+set -x fish_user_paths
 switch (uname)
 case Linux
   set -x SHELL /usr/bin/fish
@@ -18,9 +20,8 @@ end
 
 # Python setup
 if test -d "$HOME/.pyenv"
-  set -x PATH "$HOME/.pyenv/bin" $PATH
-  status --is-interactive; and . (pyenv init -|psub)
-  # status --is-interactive; and . (pyenv virtualenv-init -|psub)
+  . (pyenv init -|psub)
+  . (pyenv virtualenv-init -|psub)
 end
 
 if test -d "$HOME/.local/bin"
@@ -33,8 +34,7 @@ if test -d /usr/local/cuda
   set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/local/cuda/lib64"
 end
 
-
-status --is-interactive; and eval (python3 -m virtualfish ^ /dev/null)
+# status --is-interactive; and eval (python3 -m virtualfish ^ /dev/null)
 
 set -x PIP_USE_WHEEL "true"
 set -x PIP_WHEEL_DIR "$HOME/.pip/wheels"
@@ -53,10 +53,15 @@ if test -d "$HOME/go"
   end
 end
 
-# Perl setup
-if test -d "$HOME/perl5/perlbrew"
-   . ~/perl5/perlbrew/etc/perlbrew.fish
+if test -d "$HOME/.cargo/bin"
+  set -x fish_user_paths "$HOME/.cargo/bin" $fish_user_paths
 end
+
+
+# Perl setup
+# if test -d "$HOME/perl5/perlbrew"
+#    . ~/perl5/perlbrew/etc/perlbrew.fish
+# end
 
 # Set up perl's local::lib
 # if test -d "$HOME/perl5"
