@@ -33,7 +33,7 @@ values."
      python
      rust
      salt
-     scala
+     ;; scala
      shell
      shell-scripts
      syntax-checking
@@ -45,13 +45,14 @@ values."
    dotspacemacs-additional-packages '(
                                       dockerfile-mode
                                       systemd
-                                      ws-butler
                                       groovy-mode
                                       julia-mode
                                       snakemake-mode
                                       )
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '(yasnippet)
+   dotspacemacs-excluded-packages '(yasnippet
+                                    anaconda-mode
+                                    )
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'. (default t)
@@ -197,6 +198,10 @@ values."
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
    dotspacemacs-default-package-repository nil
+   ;; Delete whitespace while saving buffer. Possible values are `all',
+   ;; `trailing', `changed' or `nil'. Default is `changed' (cleanup whitespace
+   ;; on changed lines) (default 'changed)
+   dotspacemacs-whitespace-cleanup 'changed
    ))
 
 (defun dotspacemacs/user-init ()
@@ -213,13 +218,12 @@ layers configuration. You are free to put any user code."
   (add-to-list 'auto-mode-alist '("\\.sls\\'" . yaml-mode))
   (add-to-list 'auto-mode-alist '("\\.sf$" . snakemake-mode))
   (add-to-list 'auto-mode-alist '("\\.rules$" . snakemake-mode))
-  (require 'ws-butler)
   (setq vc-follow-symlinks t)
   ;; Show trailing whitespace for files
   (add-hook 'find-file-hook (lambda ()
                               (setq-local show-trailing-whitespace t)))
   ;; Delete trailing whitespace on save
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  ;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (add-hook 'before-save-hook 'delete-trailing-blank-lines)
   (defun delete-trailing-blank-lines ()
     "Deletes all blank lines at the end of the file."
@@ -236,6 +240,10 @@ layers configuration. You are free to put any user code."
       :config
       (add-to-list 'tramp-remote-path 'tramp-own-remote-path)))
   (setq shell-file-name "bash")
+
+  (setq-default fill-column 99)
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
