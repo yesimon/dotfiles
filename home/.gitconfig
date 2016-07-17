@@ -1,5 +1,8 @@
 [user]
-  name = Simon Ye
+	name = Simon Ye
+	signingkey = DC2940AE
+[commit]
+	gpgsign = true
 [core]
   excludesfile = ~/.gitignore
   editor = vim -f
@@ -45,4 +48,6 @@
 [include]
   path = ~/.local.gitconfig
 [push]
-  default = simple
+	default = simple
+[github]
+	user = yesimon
