@@ -26,6 +26,7 @@ end
 
 # Python setup
 if test -d "$HOME/.pyenv"
+  set -x PATH $PATH "$HOME/.pyenv/bin"
   . (pyenv init -|psub)
   . (pyenv virtualenv-init -|psub)
 end
