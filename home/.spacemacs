@@ -31,12 +31,15 @@ values."
      c-c++
      d
      python
+     ;; (python :variables
+     ;;         python-enable-yapf-format-on-save t)
      rust
      salt
      ;; scala
      shell
      shell-scripts
      syntax-checking
+     lua
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -48,10 +51,12 @@ values."
                                       groovy-mode
                                       julia-mode
                                       snakemake-mode
+                                      yapfify
                                       )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(yasnippet
                                     anaconda-mode
+                                    smartparens
                                     )
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
@@ -243,8 +248,42 @@ layers configuration. You are free to put any user code."
   (setq shell-file-name "bash")
 
   (setq-default fill-column 99)
+  (add-hook 'python-mode-hook 'yapf-mode)
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
+  (remove-hook 'prog-mode-hook #'smartparens-mode)
+  (remove-hook 'python-mode-hook 'spacemacs//init-eldoc-python-mode)
 
+  ;; (delete 'Git vc-handled-backends)
+  (setq vc-handled-backends ())
+
+  (defvar disable-tramp-backups '(all))
+
+  (eval-after-load "tramp"
+    '(progn
+       ;; Modified from https://www.gnu.org/software/emacs/manual/html_node/tramp/Auto_002dsave-and-Backup.html
+       (setq backup-enable-predicate
+             (lambda (name)
+               (and (normal-backup-enable-predicate name)
+                    ;; Disable all tramp backups
+                    (and disable-tramp-backups
+                         (member 'all disable-tramp-backups)
+                         (not (file-remote-p name 'method)))
+                    (not ;; disable backup for tramp with the listed methods
+                     (let ((method (file-remote-p name 'method)))
+                       (when (stringp method)
+                         (member method disable-tramp-backups)))))))
+
+       (defun tramp-set-auto-save--check (original)
+         (if (funcall backup-enable-predicate (buffer-file-name))
+             (funcall original)
+           (auto-save-mode -1)))
+
+       (advice-add 'tramp-set-auto-save :around #'tramp-set-auto-save--check)
+
+       ;; Don't override .ssh/config controlmaster options via command line
+       (setq tramp-use-ssh-controlmaster-options nil)
+
+       ))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
