@@ -25,8 +25,11 @@ if test -d "$HOME/.local/bin"
 end
 
 # Python setup
-if test -d "$HOME/.pyenv"
+if test -d "$HOME/.pyenv/bin"
   set -x PATH $PATH "$HOME/.pyenv/bin"
+end
+
+if which pyenv > /dev/null
   . (pyenv init -|psub)
   . (pyenv virtualenv-init -|psub)
 end
