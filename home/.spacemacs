@@ -271,7 +271,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
   (add-hook 'find-file-hook 'enable-minor-mode-based-on-extension)
 
   (setq-default fill-column 99)
-  (add-to-list 'auto-minor-mode-alist '("\\.py$" . yapf-mode))
+  ;; (add-to-list 'auto-minor-mode-alist '("\\.py$" . yapf-mode))
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
   (remove-hook 'prog-mode-hook #'smartparens-mode)
   (remove-hook 'python-mode-hook 'spacemacs//init-eldoc-python-mode)
