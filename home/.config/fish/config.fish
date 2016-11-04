@@ -26,7 +26,7 @@ end
 
 # Python setup
 if test -d "$HOME/.pyenv/bin"
-  set -x PATH $PATH "$HOME/.pyenv/bin"
+  set -x PATH "$HOME/.pyenv/bin" $PATH
 end
 
 if which pyenv > /dev/null
