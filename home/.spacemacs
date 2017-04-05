@@ -18,6 +18,7 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     javascript
      auto-completion
      better-defaults
      emacs-lisp
@@ -282,6 +283,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
   (defvar disable-tramp-backups '(all))
 
+  (setq helm-tramp-verbose 3)
+
   (eval-after-load "tramp"
     '(progn
        ;; Modified from https://www.gnu.org/software/emacs/manual/html_node/tramp/Auto_002dsave-and-Backup.html
@@ -305,11 +308,14 @@ the checking happens for all pairs in auto-minor-mode-alist"
        ;; (advice-add 'tramp-set-auto-save :around #'tramp-set-auto-save--check)
 
        ;; Don't override .ssh/config controlmaster options via command line
-       (setq tramp-use-ssh-controlmaster-options nil)
+       ;; (setq tramp-use-ssh-controlmaster-options nil)
 
        (setq tramp-completion-reread-directory-timeout 43200)
        (setq remote-file-name-inhibit-cache nil)
-
+       (setq vc-ignore-dir-regexp
+             (format "\\(%s\\)\\|\\(%s\\)"
+                     vc-ignore-dir-regexp
+                     tramp-file-name-regexp))
        ))
 )
 
