@@ -1,4 +1,4 @@
-set -g -x PATH /usr/local/bin $PATH
+set -g -x PATH /usr/local/bin /usr/local/sbin $PATH
 
 set -x fish_user_paths
 switch (uname)
@@ -17,23 +17,32 @@ case Linux
 
 case Darwin
   set -x SHELL /usr/local/bin/fish
-  set -x LESSOPEN "|/usr/local/bin/lesspipe.sh %s"
+  # This is really slow on MBA for some reason
+  # set -x LESSOPEN "|/usr/local/bin/lesspipe.sh %s"
+
+
+  # Bypass fish wrongly detecting gettext's pyenv shim if it's installed in one of pyenv's
+  # environments but not activated. This is a huge problem with pyenv + conda, where conda replace a bunch of system utilities with shims. For now just disable pyenv
+  #  set -x fish_user_paths "/usr/local/opt/gettext/bin" $fish_user_paths
 end
 
 if test -d "$HOME/.local/bin"
   set -x PATH "$HOME/.local/bin" $PATH
 end
 
-# Python setup
-if test -d "$HOME/.pyenv/bin"
-  set -x PATH "$HOME/.pyenv/bin" $PATH
-end
+#if [ "$NOPYENV" != 1 ]
+#  # Python setup
+#  if test -d "$HOME/.pyenv/bin"
+#    set -x PATH "$HOME/.pyenv/bin" $PATH
+#  end
+#
+#  if which pyenv > /dev/null
+#    . (pyenv init -|psub)
+#    . (pyenv virtualenv-init -|psub)
+#  end
+#end
 
-if which pyenv > /dev/null
-  . (pyenv init -|psub)
-  . (pyenv virtualenv-init -|psub)
-end
-
+#set -x PATH $PATH "/usr/local/opt/python@2/bin"
 
 # Cuda setup for Linux
 if test -d /usr/local/cuda
@@ -175,3 +184,6 @@ fish_load_colors
 # set -x fish_user_paths $fish_user_paths /usr/local/bin
 varclear PATH
 set -x LD_LIBRARY_PATH (puniq LD_LIBRARY_PATH)
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/yesimon/google-cloud-sdk/path.fish.inc' ]; . '/Users/yesimon/google-cloud-sdk/path.fish.inc'; end

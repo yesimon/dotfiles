@@ -31,28 +31,31 @@ values."
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
-   '(
+   '(perl5
+     nginx
      html
-     helm
      javascript
      auto-completion
      better-defaults
      emacs-lisp
-     (git :variables
-          git-gutter-use-fringe t)
+     git
      github
+     (version-control :variables
+                       version-control-diff-tool 'diff-hl)
      latex
      markdown
      org
      osx
      cscope
+     ;; gtags
      c-c++
-     d
-     python
-     ;; (python :variables
-     ;;         python-enable-yapf-format-on-save t)
+     cmake
+     (python :variables python-test-runner 'pytest
+             ;; python-enable-yapf-format-on-save t)
+             )
      rust
      salt
+     ivy
      ;; scala
      shell
      shell-scripts
@@ -71,11 +74,19 @@ values."
                                       snakemake-mode
                                       yapfify
                                       csv-mode
+                                      salt-mode
+                                      cwl-mode
                                       )
+   ;; A list of packages that cannot be updated.
+   dotspacemacs-frozen-packages '()
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(yasnippet
                                     anaconda-mode
+                                    company-anaconda
                                     smartparens
+                                    importmagic
+                                    git-gutter+
+                                    tern
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -198,6 +209,8 @@ values."
    dotspacemacs-ex-substitute-global nil
    ;; Name of the default layout (default "Default")
    dotspacemacs-default-layout-name "Default"
+
+   dotspacemacs-mode-line-theme 'spacemacs
    ;; If non nil the default layout name is displayed in the mode-line.
    ;; (default nil)
    dotspacemacs-display-default-layout nil
@@ -316,30 +329,34 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup 'changed
+   dotspacemacs-frame-title-format nil
    ))
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init'.  You are free to put any
 user code."
-  (setq python-auto-set-local-pyenv-version nil)
+  ;; (setq python-auto-set-local-pyenv-version nil)
   )
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
-  (setq python-shell-interpreter "/usr/bin/env python3")
-  (add-to-list 'auto-mode-alist '("\\.sls\\'" . yaml-mode))
-  (add-to-list 'auto-mode-alist '("\\.sf$" . snakemake-mode))
-  (add-to-list 'auto-mode-alist '("\\.rules$" . snakemake-mode))
-  (add-to-list 'auto-mode-alist '("\\.rl$" . julia-mode))
-  (setq vc-follow-symlinks t)
+  (setq shell-file-name "bash")
+  (setq helm-ff-skip-boring-files t)
+  (setq projectile-enable-caching t)
+  (setq projectile-file-exists-remote-cache-expire nil)
+  (setq counsel-find-file-ignore-regexp "\\.so\\'")
+  (setq-default fill-column 99)
+
+  (setq-default spacemacs-show-trailing-whitespace nil)
   ;; Show trailing whitespace for files
-  (add-hook 'find-file-hook (lambda ()
-                              (setq-local show-trailing-whitespace t)))
+  ;; (add-hook 'find-file-hook (lambda ()
+  ;;                             (setq-local show-trailing-whitespace t)))
   ;; Delete trailing whitespace on save
   ;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
   (add-hook 'before-save-hook 'delete-trailing-blank-lines)
   (defun delete-trailing-blank-lines ()
     "Deletes all blank lines at the end of the file."
@@ -349,17 +366,8 @@ layers configuration. You are free to put any user code."
         (widen)
         (goto-char (point-max))
         (delete-blank-lines))))
-  (use-package tramp
-    :defer t
-    :config
-    (use-package tramp-sh
-      :config
-      (add-to-list 'tramp-remote-path 'tramp-own-remote-path)))
-  (setq shell-file-name "bash")
-  (setq projectile-enable-caching t)
 
-  (setq projectile-file-exists-remote-cache-expire nil)
-
+  ;; Language specific stuff
   (defvar auto-minor-mode-alist ()
     "Alist of filename patterns vs correpsonding minor mode functions, see `auto-mode-alist'
 All elements of this alist are checked, meaning you can enable multiple minor modes for the same regexp.")
@@ -382,9 +390,15 @@ the checking happens for all pairs in auto-minor-mode-alist"
           (setq alist (cdr alist))))))
 
   (add-hook 'find-file-hook 'enable-minor-mode-based-on-extension)
-
-  (setq-default fill-column 99)
   ;; (add-to-list 'auto-minor-mode-alist '("\\.py$" . yapf-mode))
+
+  (setq python-shell-interpreter "python3")
+  (setq flycheck-python-flake8-executable "flake8")
+
+  (add-to-list 'auto-mode-alist '("\\.smk$" . snakemake-mode))
+  (add-to-list 'auto-mode-alist '("\\.rules$" . snakemake-mode))
+  (add-to-list 'auto-mode-alist '("\\.rl$" . julia-mode))
+  (c-set-offset 'case-label '+)
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
   (remove-hook 'prog-mode-hook #'smartparens-mode)
   (remove-hook 'python-mode-hook 'spacemacs//init-eldoc-python-mode)
@@ -395,59 +409,109 @@ the checking happens for all pairs in auto-minor-mode-alist"
   (add-hook 'js2-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'c-mode-common-hook #'(lambda () (modify-syntax-entry ?_ "w")))
 
+  ;; (eval-after-load "company"
+  ;;   '(add-to-list 'company-backends 'company-anaconda))
   (setq-default racer-rust-src-path "/Users/yesimon/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src")
 
-  ;; (delete 'Git vc-handled-backends)
+  ;; Tramp / VC
+  (use-package tramp
+    :defer t
+    :config
+    (use-package tramp-sh
+      :config
+      (add-to-list 'tramp-remote-path 'tramp-own-remote-path)))
   (setq vc-handled-backends ())
-  (eval-after-load "tramp"
-    '(progn
-       ;; Modified from https://www.gnu.org/software/emacs/manual/html_node/tramp/Auto_002dsave-and-Backup.html
-       ;; (setq backup-enable-predicate
-       ;;       (lambda (name)
-       ;;         (and (normal-backup-enable-predicate name)
-       ;;              ;; Disable all tramp backups
-       ;;              (and disable-tramp-backups
-       ;;                   (member 'all disable-tramp-backups)
-       ;;                   (not (file-remote-p name 'method)))
-       ;;              (not ;; disable backup for tramp with the listed methods
-       ;;               (let ((method (file-remote-p name 'method)))
-       ;;                 (when (stringp method)
-       ;;                   (member method disable-tramp-backups)))))))
+  (setq vc-follow-symlinks t)
+  (setq tramp-completion-reread-directory-timeout nil)
+  (setq tramp-histfile-override t)
+  (setq remote-file-name-inhibit-cache nil)
+  (setq tramp-default-method "scp")
+  ;; (eval-after-load "tramp"
+  ;;   '(progn
 
-       ;; (defun tramp-set-auto-save--check (original)
-       ;;   (if (funcall backup-enable-predicate (buffer-file-name))
-       ;;       (funcall original)
-       ;;     (auto-save-mode -1)))
+  ;;      ;; Don't override .ssh/config controlmaster options via command line
 
-       ;; (advice-add 'tramp-set-auto-save :around #'tramp-set-auto-save--check)
+  ;;      (setq tramp-use-ssh-controlmaster-options nil)
 
-       ;; Don't override .ssh/config controlmaster options via command line
-       (setq tramp-use-ssh-controlmaster-options nil)
+  ;;      (setq tramp-debug-buffer t)
+  ;;      ;; (setq tramp-verbose 10)
+  ;;      (defvar disable-tramp-backups '(all))
+  ;;      ;; (setq helm-tramp-verbose 3)
 
-       (setq tramp-debug-buffer t)
-       (setq tramp-verbose 10)
-       (defvar disable-tramp-backups '(all))
-       (setq helm-tramp-verbose 3)
-
-       (setq tramp-completion-reread-directory-timeout 43200)
-       (setq remote-file-name-inhibit-cache nil)
-       (setq vc-ignore-dir-regexp
-             (format "\\(%s\\)\\|\\(%s\\)"
-                     vc-ignore-dir-regexp
-                     tramp-file-name-regexp))
-       ))
-)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:foreground "#DCDCCC" :background "#3F3F3F")))))
+  ;;      (setq tramp-completion-reread-directory-timeout 43200)
+  ;;      (setq remote-file-name-inhibit-cache nil)
+  ;;      (setq vc-ignore-dir-regexp
+  ;;            (format "\\(%s\\)\\|\\(%s\\)"
+  ;;                    vc-ignore-dir-regexp
+  ;;                    tramp-file-name-regexp))
+  ;;      (setq tramp-default-method "ssh")
+  ;;      ))
+  (spacemacs|advise-commands
+   "indent" (yank yank-pop evil-paste-before evil-paste-after) around
+   "If current mode is not one of spacemacs-indent-sensitive-modes
+ indent yanked text (with universal arg don't indent)."
+   (let ((prefix (ad-get-arg 0)))
+     (ad-set-arg 0 (unless (equal '(4) prefix) prefix))
+     (evil-start-undo-step)
+     ad-do-it
+     (if (and (not (equal '(4) prefix))
+              (not (member major-mode spacemacs-indent-sensitive-modes))
+              (or (derived-mode-p 'prog-mode)
+                  (member major-mode spacemacs-indent-sensitive-modes)))
+         (let ((transient-mark-mode nil)
+               (save-undo buffer-undo-list))
+           (spacemacs/yank-advised-indent-function (region-beginning)
+                                                   (region-end))))
+     (evil-end-undo-step)
+     (ad-set-arg 0 prefix)))
+  )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (zenburn-theme yapfify xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org tagedit systemd spaceline snakemake-mode smeargle slim-mode shell-pop scss-mode sass-mode salt-mode reveal-in-osx-finder restart-emacs rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file neotree mwim multi-term move-text markdown-toc magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode launchctl julia-mode json-mode js2-refactor js-doc insert-shebang info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-cscope helm-company helm-c-yasnippet helm-ag groovy-mode google-translate golden-ratio gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gist gh-md fuzzy flycheck-rust flycheck-pos-tip flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump dockerfile-mode disaster d-mode cython-mode csv-mode company-web company-tern company-statistics company-shell company-dcd company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format cargo auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+   '(adaptive-wrap zenburn-theme yapfify xterm-color xcscope ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org tagedit systemd spaceline snakemake-mode smeargle slim-mode shell-pop scss-mode sass-mode salt-mode reveal-in-osx-finder restart-emacs request rainbow-delimiters racer pytest py-isort pug-mode popwin pip-requirements persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file nginx-mode neotree mwim multi-term move-text markdown-toc magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode launchctl julia-mode json-mode js2-refactor js-doc ivy insert-shebang indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-make groovy-mode google-translate golden-ratio gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gist gh-md fuzzy flycheck-rust flycheck-pos-tip flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump dockerfile-mode disaster diminish diff-hl cython-mode csv-mode company-web company-tern company-statistics company-shell company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format cargo auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-window ace-link ac-ispell)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(evil-want-Y-yank-to-eol nil)
+ '(hl-todo-keyword-faces
+   '(("TODO" . "#dc752f")
+     ("NEXT" . "#dc752f")
+     ("THEM" . "#2d9574")
+     ("PROG" . "#4f97d7")
+     ("OKAY" . "#4f97d7")
+     ("DONT" . "#f2241f")
+     ("FAIL" . "#f2241f")
+     ("DONE" . "#86dc2f")
+     ("NOTE" . "#b1951d")
+     ("KLUDGE" . "#b1951d")
+     ("HACK" . "#b1951d")
+     ("TEMP" . "#b1951d")
+     ("FIXME" . "#dc752f")
+     ("XXX" . "#dc752f")
+     ("XXXX" . "#dc752f")
+     ("???" . "#dc752f")))
+ '(package-selected-packages
+   '(cwl-mode wdl-mode adaptive-wrap zenburn-theme yapfify xterm-color xcscope ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org tagedit systemd spaceline snakemake-mode smeargle slim-mode shell-pop scss-mode sass-mode salt-mode reveal-in-osx-finder restart-emacs request rainbow-delimiters racer pytest py-isort pug-mode popwin pip-requirements persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file nginx-mode neotree mwim multi-term move-text markdown-toc magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode launchctl julia-mode json-mode js2-refactor js-doc ivy insert-shebang indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-make groovy-mode google-translate golden-ratio gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gist gh-md fuzzy flycheck-rust flycheck-pos-tip flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump dockerfile-mode disaster diminish diff-hl cython-mode csv-mode company-web company-tern company-statistics company-shell company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format cargo auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-window ace-link ac-ispell)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)

@@ -13,3 +13,7 @@
 .emacs.d/emacs.desktop
 flycheck_*.py
 tags
+
+cscope.*
+
+.dir-locals.el
